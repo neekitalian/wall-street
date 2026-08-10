@@ -1,71 +1,106 @@
 ---
 name: wall-street-capital-games
-description: Explain how Wall Street institutions make money and interact, and build goal-based study plans from finance books and case studies. Use for requests about investment banks, sales and trading, market makers, private equity, hedge funds, LBOs, leverage, derivatives, distressed debt, restructuring, activist investing, M&A, control rights, or reading plans that teach institutional finance rather than retail stock picking.
+description: "Knowledge base synthesized from institutional-finance books and cases. Use to analyze investment banks, sales and trading, market makers, hedge funds, private equity, LBOs, leverage, derivatives, quantitative strategies, distressed debt, restructuring, M&A, governance, control rights, or to build a Wall Street study plan."
 ---
+
+<!-- argument-hint: [topic, case, framework, or chapter number] -->
 
 # Wall Street Capital Games
 
-Build a causal map of the institutions, incentives, instruments, cash flows, and control rights in a transaction. Treat the books as case evidence, not as investment recommendations.
+**Sources:** 11 books/reports | **Source pages:** ~2,236 | **Thematic chapters:** 15 | **Generated:** 2026-08-10
 
-## Route the request
+## How to Use This Skill
 
-1. Identify the user's goal:
-   - orientation: understand who does what and who pays whom;
-   - deal mechanics: follow an LBO, M&A process, or restructuring;
-   - trading: understand position expression, counterparties, spread, leverage, and exit;
-   - quant: understand the research-to-execution system;
-   - reading plan: order available books and specify chapters or page ranges;
-   - case analysis: reconstruct incentives, capital structure, and turning points.
-2. Read [references/concept-map.md](references/concept-map.md) for institutional and transaction analysis.
-3. Read [references/reading-paths.md](references/reading-paths.md) when books, curricula, or reading ranges are involved.
-4. Ask only for missing information that materially changes the result. Otherwise state a reasonable assumption and proceed.
+- With a topic, use the Topic Index to load the relevant chapter before answering.
+- With `chNN`, load that chapter directly.
+- For a transaction or case, load Ch 15 plus the most relevant specialist chapter.
+- For a curriculum, read [references/reading-paths.md](references/reading-paths.md).
+- For source provenance, read [references/source-index.md](references/source-index.md).
 
-## Analyze the game
+Do not answer a source-specific question from the master index alone. Read the linked chapter. Treat these files as synthesized study notes, not substitutes for source text, current legal advice, or investment recommendations.
 
-For each case, answer these questions in order:
+## Core Frameworks
 
-1. Who are the principals, agents, intermediaries, and counterparties?
-2. Where does cash enter, move, and exit?
-3. How is each participant paid: fee, spread, carry, interest, option value, or capital gain?
-4. Who owns the risk before and after the transaction?
-5. What creates leverage: borrowed money, derivatives, operating fixed costs, or legal priority?
-6. Who holds control rights: votes, board seats, covenants, collateral, consent rights, or bankruptcy claims?
-7. What event realizes or destroys value?
-8. What can break first: price, funding, liquidity, collateral, counterparty, regulation, or governance?
+### Six-map method
 
-Distinguish legal, documented conduct from allegations, narrative framing, and illegal conduct. Do not romanticize manipulation, insider trading, fraud, or evasion. Explain mechanisms without providing instructions to commit wrongdoing.
+Use for any complex transaction or trade:
 
-## Build a reading plan
+1. **Actor map:** principals, agents, intermediaries, counterparties, regulators.
+2. **Cash-flow map:** where cash enters, moves, and exits.
+3. **Risk map:** who owns market, credit, liquidity, funding, legal, and operational risk.
+4. **Capital-structure map:** claims, priority, collateral, guarantees, and legal entities.
+5. **Control-right map:** votes, board seats, covenants, consent rights, blocking positions, and deadlines.
+6. **Timeline:** entry, financing, catalysts, maturities, approvals, distress points, and exit.
 
-Inventory the files before planning. Record title, author, format, edition, total pages, table of contents, bookmarks, and whether text is searchable. Prefer chapter names over page numbers when editions differ.
+### Mechanism-incentive-risk-lesson stack
 
-Order material by prerequisites:
+For each conclusion state:
 
-`institutional incentives -> control transactions -> information and enforcement -> hedge-fund strategies -> leverage failure -> trade construction -> quant systems -> distressed restructuring`
+- **Mechanism:** how the structure works.
+- **Incentive:** why every participant chooses it and how each is paid.
+- **Risk:** how the path fails before terminal value is realized.
+- **Lesson:** what generalizes and what is case-specific.
 
-For every item, provide:
+### Value-realization gate
 
-- why it appears at that point;
-- required range;
-- optional or skimmable range;
-- concepts to track;
-- one output exercise, such as a transaction map or capital-structure table.
+A theoretical mispricing or enterprise value matters only when there is a feasible path to realization. Specify instrument or legal claim, catalyst, funding survival, decision-maker, counterparty, timing, and exit distribution.
 
-Keep reports and articles outside the main book sequence unless they supply a required prerequisite. Estimate duration from the user's pace; if none is given, use 25-30 pages per day and label the assumption.
+### Path versus terminal value
 
-## Inspect local source files
+Always model whether funding, collateral, liquidity, and governance survive until the thesis resolves. A terminally correct position can still be liquidated; a valuable company can still leave a particular claim impaired.
 
-Use the applicable PDF or document skill for file inspection. For PDFs, verify the contents page visually and use bookmarks or extracted headings to map PDF pages to printed pages. For EPUB files, inspect `toc.ncx` or navigation XHTML. For archives, list contents before extracting selected files to a temporary directory.
+### Value creation versus value transfer
 
-Never infer chapter boundaries from filenames alone. When two copies differ, recommend the version with intact navigation, searchable text, and stable pagination. Do not redistribute copyrighted source books or add them to a repository.
+Separate operating improvement and new cash flow from changes in leverage, tax, fees, priority, bargaining power, or valuation multiple. The latter may redistribute value among stakeholders without increasing enterprise productivity.
 
-## Present the result
+## Chapter Index
 
-Lead with the recommended route. Use a compact table when comparing three or more books or participants. Define specialized terms on first use. Separate:
+| # | Thematic chapter | Key frameworks |
+|---|---|---|
+| [ch01](chapters/ch01-trading-floor-incentives.md) | Trading-Floor Incentives | sales-trader-client loop, inventory transfer |
+| [ch02](chapters/ch02-bond-market-making.md) | Bond Market-Making | duration, sizing, product innovation |
+| [ch03](chapters/ch03-lbo-sources-and-uses.md) | LBO Sources and Uses | debt capacity, return decomposition |
+| [ch04](chapters/ch04-control-auction-governance.md) | Control Auctions | bid quality, conflicts, governance |
+| [ch05](chapters/ch05-information-enforcement.md) | Information and Enforcement | provenance, merger arbitrage |
+| [ch06](chapters/ch06-hedge-fund-strategy-map.md) | Hedge-Fund Strategy Map | alpha/beta, liquidity fit, capacity |
+| [ch07](chapters/ch07-macro-long-short.md) | Macro and Long-Short | reflexivity, regimes, paired theses |
+| [ch08](chapters/ch08-ltcm-leverage-liquidity.md) | LTCM and Leverage | convergence, margin, liquidity spiral |
+| [ch09](chapters/ch09-big-short-trade-construction.md) | Big Short Construction | payoff chain, CDS, counterparty |
+| [ch10](chapters/ch10-trade-memo-risk-budget.md) | Trade Memo | risk budget, invalidation, pre-mortem |
+| [ch11](chapters/ch11-quant-research-system.md) | Quant Research System | data-to-execution, overfitting, costs |
+| [ch12](chapters/ch12-distressed-capital-structure.md) | Distressed Capital Structure | entities, waterfall, fulcrum claim |
+| [ch13](chapters/ch13-restructuring-negotiation.md) | Restructuring Negotiation | BATNA, coalitions, litigation value |
+| [ch14](chapters/ch14-global-risk-scenarios.md) | Global Risk Scenarios | transmission, horizons, compound risks |
+| [ch15](chapters/ch15-integrated-capital-game.md) | Integrated Analysis | six maps, value realization |
 
-- mechanism: how the structure works;
-- incentive: why participants choose it;
-- risk: how it fails;
-- lesson: what the case teaches.
+## Topic Index
 
-Close with the next practical artifact the reader should produce, not with generic investing advice.
+- **Activist / hedge-fund types** -> ch06
+- **Auctions / boards / conflicts** -> ch04
+- **Bonds / duration / market making** -> ch01, ch02
+- **Capital structure / collateral / priority** -> ch12
+- **CDS / CDO / subprime** -> ch09
+- **Counterparty / carry / catalyst** -> ch09, ch10
+- **Distressed debt / bankruptcy** -> ch12, ch13
+- **Global macro / reflexivity** -> ch07, ch14
+- **Hedge-fund strategy selection** -> ch06, ch07
+- **Information / insider trading / merger arbitrage** -> ch05
+- **LBO / PE / acquisition financing** -> ch03, ch04
+- **Leverage / LTCM / liquidity spiral / VaR** -> ch08
+- **Quant / signals / backtests / execution** -> ch11
+- **Restructuring / creditor coalitions / cramdown** -> ch13
+- **Sales / traders / spread / bonus** -> ch01
+- **Trade construction / position sizing** -> ch09, ch10
+
+## Supporting Files
+
+- [cheatsheet.md](cheatsheet.md) - decision tables and failure smells
+- [glossary.md](glossary.md) - key terms with chapter links
+- [patterns.md](patterns.md) - reusable analysis methods
+- [references/concept-map.md](references/concept-map.md) - institutional and transaction maps
+- [references/reading-paths.md](references/reading-paths.md) - full and compressed curricula
+- [references/source-index.md](references/source-index.md) - source-to-chapter provenance
+
+## Scope and Safety
+
+Explain mechanisms without facilitating insider trading, fraud, market manipulation, concealment, or evasion. Distinguish documented conduct, allegation, narrative interpretation, and illegal conduct. For current law, regulation, prices, or market conditions, verify authoritative current sources before answering.
