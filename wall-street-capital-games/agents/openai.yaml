@@ -1,0 +1,4 @@
+interface:
+  display_name: "Wall Street Capital Games"
+  short_description: "Map Wall Street institutions, deals, leverage, and reading paths"
+  default_prompt: "Use $wall-street-capital-games to build a practical reading plan for understanding Wall Street institutions and capital games."
