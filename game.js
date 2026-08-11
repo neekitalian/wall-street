@@ -251,7 +251,7 @@ function renderNetworks(c) {
 function renderDeal() {
   const deal = opportunities[state.currentDeal];
   setText("dealType", pick(deal.type)); setText("lessonText", pick(deal.lesson));
-  document.getElementById("dealContent").innerHTML = `<div class="pixel-stage"><div class="pixel-phone"><i></i><b></b><span></span></div><div class="broker-card"><div class="pixel-face"><i></i><b></b><em></em></div><strong>${lang === "en" ? "RALPH · DEAL DESK" : "RALPH · 交易台"}</strong></div></div><div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
+  document.getElementById("dealContent").innerHTML = `<div class="pixel-stage"><div class="office-scene" role="img" aria-label="${lang === "en" ? "New York deal office overlooking Manhattan" : "俯瞰曼哈顿的纽约交易办公室"}"></div><div class="broker-card"><div class="pixel-face"><i></i><b></b><em></em></div><strong>${lang === "en" ? "RALPH · DEAL DESK" : "RALPH · 交易台"}</strong></div></div><div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
   const actions = document.getElementById("dealActions"); actions.innerHTML = "";
   deal.actions.forEach(action => { const b = document.createElement("button"); b.type = "button"; b.disabled = state.aiLoading; b.innerHTML = `${pick(action.label)}<small>${scaledTerms(pick(action.sub))}</small>`; b.addEventListener("click", () => chooseAction(action)); actions.appendChild(b); });
 }
