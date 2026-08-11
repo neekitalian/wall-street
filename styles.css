@@ -42,7 +42,7 @@ h2 { margin: 0; font-size: 18px; letter-spacing: -.025em; }
 .goal-track { height: 5px; margin: 8px 0 5px; background: #d9d5ca; overflow: hidden; }
 .goal-track span { display: block; height: 100%; width: 30%; background: var(--gold); transition: width .45s ease; }
 .goal-meter small { color: var(--muted); }
-.metrics { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); background: rgba(250,248,241,.55); }
+.metrics { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--line); background: rgba(250,248,241,.55); }
 .metrics article { padding: 14px 18px; border-right: 1px solid var(--line); }
 .metrics article:last-child { border-right: 0; }
 .metrics span { display: block; margin-bottom: 5px; }
@@ -135,7 +135,6 @@ h2 { margin: 0; font-size: 18px; letter-spacing: -.025em; }
   .metrics { grid-template-columns: repeat(2,1fr); }
   .metrics article { border-bottom: 1px solid var(--line); }
   .metrics article:nth-child(2n) { border-right: 0; }
-  .metrics article:last-child { grid-column: 1/-1; }
   .game-grid { grid-template-columns: 1fr; }
   .deal-panel { grid-column: auto; width: 100%; }
   .deal-actions { grid-template-columns: 1fr; }

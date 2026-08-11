@@ -204,8 +204,7 @@ function render() {
   document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
   setText("languageButton", lang === "en" ? "中文" : "EN"); setText("restartButton", c.restart);
   setText("missionCopy", lang === "en" ? `Grow ${money(state.startCapital)} into ${money(state.target)}. Survive the path, not just the forecast.` : `把 ${money(state.startCapital)} 增长到 ${money(state.target)}。不仅要看对终局，更要活过过程。`); setText("wealthLabel", c.wealth); setText("goalCopy", c.goal);
-  setText("liquidityLabel", c.liquidity); setText("debtLabel", c.debt); setText("controlLabel", c.control);
-  setText("reputationLabel", c.reputation); setText("fragilityLabel", c.fragility); setText("balanceTitle", c.balance);
+  setText("liquidityLabel", c.liquidity); setText("debtLabel", c.debt); setText("balanceTitle", c.balance);
   setText("dealTitle", c.deal); setText("networkTitle", c.network); setText("rateLabel", c.rate);
   setText("creditLabel", c.credit); setText("sentimentLabel", c.market); setText("lessonLabel", c.lesson);
   setText("wealthFormula", c.formula); setText("formulaSub", c.formulaSub); setText("eventLabel", c.latest);
@@ -215,7 +214,6 @@ function render() {
   const year = 2027 + Math.floor((state.turn - 1) / 4), quarter = ((state.turn - 1) % 4) + 1;
   setText("quarterLabel", `${year} Q${quarter} · ${lang === "en" ? "TURN" : "回合"} ${Math.min(state.turn,20)}/20`);
   setText("netWorth", money(netWorth())); setText("liquidity", money(state.cash)); setText("debt", money(state.debt));
-  setText("control", Math.round(state.control)); setText("reputation", Math.round(state.reputation)); setText("fragility", Math.round(state.fragility));
   setText("goalCopy", `${lang === "en" ? "Goal" : "目标"} ${money(state.target)}`); document.getElementById("goalProgress").style.width = `${clamp(netWorth() / state.target * 100, 0, 100)}%`;
   setText("rateValue", `${Math.max(.1,state.rate).toFixed(1)}%`); setText("creditValue", state.credit); setText("sentimentValue", state.sentiment);
   setText("regimeBadge", state.sentiment === "OPTIMISTIC" ? (lang === "en" ? "EXPANSION" : "扩张") : (lang === "en" ? "CAUTION" : "谨慎"));
