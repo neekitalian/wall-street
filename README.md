@@ -1,112 +1,39 @@
 # Capital Machine
 
-**A retro strategy game about how capital becomes power.**
+Capital Machine turns a reading list of classic Wall Street books into a strategy game.
 
-Capital Machine puts the player inside the decisions that shape institutional wealth: buying control, borrowing against cash flow, protecting liquidity, negotiating with creditors and surviving long enough for a thesis to work.
+The books explain finance through people, institutions and historical deals. The game converts those stories into systems the player can operate: spreads, incentives, leverage, liquidity, control rights, counterparty risk, creditor priority and negotiation.
 
-This is not a stock-picking simulator. It is a game about ownership, incentives and the capital structure.
+## From books to game mechanics
 
-## The idea
+| Book | What it contributes | How it becomes playable |
+| --- | --- | --- |
+| *Liar's Poker* — Michael Lewis | Bond desks, sales incentives, inventory and spreads | The player sees that a financial product moves through a chain of sellers, traders and clients, each with a different incentive. Reputation and relationships affect access to future deals. |
+| *Barbarians at the Gate* — Bryan Burrough and John Helyar | LBO financing, auctions, boards and management conflict | Acquisitions are built from equity and borrowed money. The player must balance purchase price, debt service, control and management incentives. |
+| *Den of Thieves* — James B. Stewart | Merger arbitrage, information networks and enforcement | Information becomes a valuable but dangerous resource. A potential edge must be weighed against reputation, legality and enforcement risk. |
+| *More Money Than God* — Sebastian Mallaby | Macro, long-short, arbitrage, event-driven and activist hedge funds | Opportunities use different sources of edge, time horizons and liquidity requirements rather than one universal investing strategy. |
+| *When Genius Failed* — Roger Lowenstein | LTCM, convergence trades, leverage and liquidity spirals | Small expected price convergence can be amplified with debt, but adverse marks increase fragility and can force liquidation before the thesis is realized. |
+| *The Big Short* — Michael Lewis | Mispricing, thesis expression, CDS, carry and counterparties | Finding a wrong price is only the beginning. The player must choose an instrument, fund the position, survive its carrying cost and depend on a counterparty to pay. |
+| *The Man Who Solved the Market* — Gregory Zuckerman | Signals, statistical edges, portfolio construction and execution | Quantitative opportunities are treated as many small probabilistic advantages whose value depends on sizing, diversification and disciplined execution. |
+| *The Caesars Palace Coup* — Max Frumes and Sujeet Indap | Distressed debt, legal entities, collateral and creditor warfare | When a company is under stress, the game shifts attention from its stock price to the capital structure: who is secured, who is senior and who can block or control a restructuring. |
 
-Wealth does not grow from returns alone. It grows through a system:
+## The conversion method
+
+Each source is reduced to four game elements:
+
+1. **Role** — who is making the decision: Founder, PE Fund, Bank, Hedge Fund or Creditor.
+2. **Resource** — what that role controls: cash, debt capacity, information, collateral, votes or time.
+3. **Decision** — what the player can actually do: finance, acquire, operate, hedge, enforce, extend or restructure.
+4. **Failure mode** — how the strategy breaks: forced selling, covenant pressure, counterparty failure, loss of control or insolvency.
+
+The result is not a quiz about the books and not a simulation of their exact historical events. It is a playable synthesis of their recurring logic.
+
+The central rule is:
 
 > **Ownership × Cash Flow × Time**
 
-Leverage can accelerate that system, but it also increases fragility. Liquidity buys time. Control determines who can act. Reputation and relationships affect which deals become available. Debt decides who has power when the optimistic case fails.
+Leverage accelerates the system in both directions. Liquidity determines whether the player has enough time. Control determines who can act when interests diverge.
 
-The game is built around five principles:
+The supporting notes are organized in [`wall-street-capital-games/`](wall-street-capital-games/). They contain synthesized frameworks and study notes, not copies of the source books.
 
-1. **Control is different from ownership.** A smaller economic stake can still carry decisive voting, board or covenant rights.
-2. **Liquidity is strategic.** Cash is not idle when it preserves optionality and prevents forced selling.
-3. **Leverage magnifies both directions.** It can concentrate gains, but it transfers power to lenders when cash flow weakens.
-4. **Every asset is someone else's liability or claim.** The same company looks different to its founder, owner, bank and creditors.
-5. **Survival precedes compounding.** A strong thesis has no value if its financing cannot survive the path to realization.
-
-## How the game works
-
-### Solo mandate
-
-Start with a fixed **$1M mandate** and choose a capital origin. Over twenty quarterly turns, evaluate opportunities involving:
-
-- leveraged buyouts and operating control;
-- distressed debt and claim priority;
-- market mispricing, catalysts and funding risk;
-- quantitative convergence and liquidity spirals;
-- private-company valuation, access and governance.
-
-Each decision changes more than net worth. The player must manage cash, debt, control, reputation, relationships and fragility. The objective is to build a capital machine that can keep operating—not simply to produce the highest final number.
-
-### Online capital table
-
-Players occupy different sides of the same transaction:
-
-- **Founder** — operates the company and protects strategic control.
-- **PE Fund** — acquires, governs and improves the asset.
-- **Bank** — sets credit availability, pricing and covenants.
-- **Hedge Fund** — trades the structure, catalysts and downside.
-- **Creditor** — controls maturity, enforcement and restructuring leverage.
-
-Two modes are available:
-
-| Mode | Starting balance sheet | Seats |
-| --- | --- | --- |
-| **2 players** | $10M cash · $50M enterprise value · $15M debt | Two human roles and three conservative AI desks |
-| **5 players** | $20M cash · $100M enterprise value · $40M debt | Five human-controlled roles |
-
-Starting funds are determined by the mode and cannot be edited by players. Rooms use anonymous six-character codes, timed turns, server-side validation and reconnectable sessions.
-
-## Rules before narration
-
-All financial outcomes are deterministic and resolved by the game engine. Clients submit decisions, never balance-sheet values.
-
-Replicate can generate Ralph's deal-desk commentary after a turn, but AI narration cannot change cash, debt, returns or control. Generated scenarios are fictional educational material—not market forecasts or investment recommendations.
-
-## Visual direction
-
-Capital Machine uses an original late-1980s PC finance-game aesthetic: VGA pixel art, CRT colors, character portraits, Manhattan deal rooms and broker dialogue. The interface treats financial structure as a game board rather than a spreadsheet tutorial.
-
-## Play locally
-
-The offline solo game requires no build step:
-
-```bash
-python3 -m http.server 8000
-```
-
-Open `http://localhost:8000`.
-
-To run the Vercel Functions locally:
-
-```bash
-npx vercel dev
-```
-
-## Enable online features
-
-### Multiplayer
-
-1. Connect a Supabase database through the Vercel Marketplace.
-2. Run [`001_multiplayer.sql`](supabase/migrations/001_multiplayer.sql) and then [`002_two_player_mode.sql`](supabase/migrations/002_two_player_mode.sql) in the Supabase SQL Editor.
-3. Configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in Vercel.
-4. Mark the service-role value as Sensitive and redeploy.
-
-The multiplayer state is authoritative in Postgres and synchronizes every two seconds. Session tokens are stored on the player's device; only SHA-256 hashes are stored in the database.
-
-### AI deal desk
-
-Configure these server-side Vercel environment variables:
-
-```text
-REPLICATE_API_TOKEN
-REPLICATE_MODEL=qwen/qwen3-235b-a22b-instruct-2507
-```
-
-Mark `REPLICATE_API_TOKEN` as Sensitive. Never expose either secret in frontend JavaScript or commit it to Git.
-
-If Replicate is unavailable, the game falls back to its offline event deck.
-
-## Intellectual foundation
-
-The scenarios draw on the histories of Wall Street trading desks, LBOs, hedge funds, quantitative strategies, merger arbitrage and distressed restructurings. The structured supporting knowledge lives in [`wall-street-capital-games/`](wall-street-capital-games/).
-
-Capital Machine is an educational game. It is not investment, legal or tax advice.
+Capital Machine is an educational game, not investment, legal or tax advice.
