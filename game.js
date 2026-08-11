@@ -7,7 +7,7 @@ const copy = {
     formula: "OWNERSHIP × CASH FLOW × TIME", formulaSub: "Leverage accelerates both directions.", latest: "LATEST EVENT",
     decision: "Choose one. The quarter advances after your decision.", playAgain: "Play again", allocation: "CAPITAL AT RISK",
     leverage: "DEBT MULTIPLIER", setupTitle: "Choose your starting position", setupIntro: "Wealth changes the deals you can access. Your origin changes the advantages—and obligations—you begin with.",
-    capital: "STARTING CAPITAL", reserve: "INITIAL CASH RESERVE", begin: "Begin mandate",
+    capital: "STARTING CAPITAL", reserve: "INITIAL CASH RESERVE", begin: "Begin mandate", aiCalling: "RALPH IS CALLING…", aiLive: "AI DEAL DESK", offline: "OFFLINE DECK",
     assets: ["Cash", "Public equity", "Private equity", "Real estate"],
     people: ["Bankers", "Investors", "Boards", "Operators"],
     endKicker: "FINAL INVESTMENT COMMITTEE"
@@ -20,7 +20,7 @@ const copy = {
     formula: "所有权 × 现金流 × 时间", formulaSub: "杠杆会同时加速两个方向。", latest: "最新事件",
     decision: "选择一个方案。决策后进入下一季度。", playAgain: "再玩一次", allocation: "风险资本比例",
     leverage: "债务倍数", setupTitle: "选择你的起点", setupIntro: "财富规模决定可参与的交易；出身决定你最初拥有的优势与义务。",
-    capital: "初始资本", reserve: "初始现金储备", begin: "开始管理",
+    capital: "初始资本", reserve: "初始现金储备", begin: "开始管理", aiCalling: "RALPH 来电中…", aiLive: "AI交易台", offline: "离线事件牌",
     assets: ["现金", "上市股权", "私人股权", "房地产"],
     people: ["银行家", "投资人", "董事会", "经营者"],
     endKicker: "最终投资委员会"
@@ -118,7 +118,8 @@ function initialState() {
   const origin = origins.find(x => x.id === settings.origin); const liquid = settings.capital * settings.reserve / 100; const invested = settings.capital - liquid;
   return { turn: 1, startCapital: settings.capital, target: Math.max(30, settings.capital * 10), cash: liquid, public: invested * .5, private: invested * .4, realEstate: invested * .1, debt: 0,
     control: 38 + origin.control, reputation: 50 + origin.reputation, fragility: settings.origin === "fund" ? 22 : 12, rate: 4.2, credit: "OPEN", sentiment: "OPTIMISTIC",
-    bankers: 48 + origin.network, investors: 45 + origin.network, boards: 36 + origin.network, operators: 44 + (settings.origin === "builder" ? 12 : origin.network), lastEvent: 0, currentDeal: 0, ended: false };
+    bankers: 48 + origin.network, investors: 45 + origin.network, boards: 36 + origin.network, operators: 44 + (settings.origin === "builder" ? 12 : origin.network),
+    lastEvent: 0, currentDeal: 0, ended: false, aiNarration: null, aiLoading: false, runId: `${Date.now()}-${Math.random()}` };
 }
 
 function invest(s, cashCost, debtAdded, assetGain, controlGain, reputationGain, fragilityGain) {
@@ -146,8 +147,9 @@ const money = value => `${value < 0 ? "−" : ""}$${Math.abs(value).toFixed(1)}M
 const netWorth = () => state.cash + state.public + state.private + state.realEstate - state.debt;
 const pick = pair => pair[lang === "en" ? 0 : 1];
 
-function chooseAction(action) {
+async function chooseAction(action) {
   if (state.ended) return;
+  const deal = opportunities[state.currentDeal]; const actionName = pick(action.label);
   action.fx(state);
   applyQuarterEconomics();
   const event = events[(state.turn * 7 + state.currentDeal * 3) % events.length];
@@ -156,8 +158,31 @@ function chooseAction(action) {
   normalizeState();
   state.turn += 1;
   state.currentDeal = (state.currentDeal + 1 + (state.turn % 2)) % opportunities.length;
+  state.aiNarration = null; state.aiLoading = true;
   render();
   if (state.cash < -.01 || netWorth() <= 0 || state.fragility >= 100 || state.turn > 20) finishGame();
+  if (!state.ended) await requestNarration(deal, actionName, event);
+}
+
+async function requestNarration(deal, actionName, event) {
+  const runId = state.runId; const turn = state.turn;
+  try {
+    const response = await fetch("/api/game-event", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        turn: state.turn - 1, language: lang, origin: settings.origin, action: actionName, deal: pick(deal.title), localEvent: pick(event.title),
+        market: { regime: state.sentiment, baseRate: state.rate, credit: state.credit },
+        portfolio: { netWorth: netWorth(), cash: state.cash, debt: state.debt, control: state.control, reputation: state.reputation, fragility: state.fragility }
+      })
+    });
+    if (!response.ok) throw new Error("Narrator unavailable");
+    const payload = await response.json();
+    if (state.runId === runId && state.turn === turn && payload?.narration?.dialogue) state.aiNarration = payload.narration;
+  } catch (_) {
+    if (state.runId === runId && state.turn === turn) state.aiNarration = null;
+  } finally {
+    if (state.runId === runId && state.turn === turn) { state.aiLoading = false; render(); }
+  }
 }
 
 function applyQuarterEconomics() {
@@ -227,7 +252,7 @@ function renderDeal() {
   setText("dealType", pick(deal.type)); setText("lessonText", pick(deal.lesson));
   document.getElementById("dealContent").innerHTML = `<div class="pixel-stage"><div class="pixel-phone"><i></i><b></b><span></span></div><div class="broker-card"><div class="pixel-face"><i></i><b></b><em></em></div><strong>${lang === "en" ? "RALPH · DEAL DESK" : "RALPH · 交易台"}</strong></div></div><div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
   const actions = document.getElementById("dealActions"); actions.innerHTML = "";
-  deal.actions.forEach(action => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = `${pick(action.label)}<small>${scaledTerms(pick(action.sub))}</small>`; b.addEventListener("click", () => chooseAction(action)); actions.appendChild(b); });
+  deal.actions.forEach(action => { const b = document.createElement("button"); b.type = "button"; b.disabled = state.aiLoading; b.innerHTML = `${pick(action.label)}<small>${scaledTerms(pick(action.sub))}</small>`; b.addEventListener("click", () => chooseAction(action)); actions.appendChild(b); });
 }
 
 function scaledTerms(terms) {
@@ -236,6 +261,18 @@ function scaledTerms(terms) {
 }
 
 function renderEvent() {
+  const status = document.getElementById("narratorStatus"); status.dataset.live = String(Boolean(state.aiNarration));
+  setText("narratorStatus", state.aiLoading ? copy[lang].aiCalling : state.aiNarration ? copy[lang].aiLive : copy[lang].offline);
+  if (state.aiLoading) {
+    setText("eventTitle", lang === "en" ? "Connecting to Ralph" : "正在连接 Ralph");
+    setText("eventText", lang === "en" ? "The deterministic books are closed. The deal desk is preparing its reaction." : "本回合的确定性账本已经结算，交易台正在准备回应。"); return;
+  }
+  if (state.aiNarration) {
+    setText("eventTitle", `${state.aiNarration.speaker} · ${state.aiNarration.complication}`);
+    setText("eventText", state.aiNarration.dialogue);
+    if (state.aiNarration.lesson) setText("lessonText", state.aiNarration.lesson);
+    return;
+  }
   if (state.turn === 1) {
     setText("eventTitle", lang === "en" ? "The mandate begins" : "委托正式开始");
     setText("eventText", lang === "en" ? "You inherit a liquid $30M portfolio and a network with more potential than trust." : "你接手了一个流动性充足的三千万美元组合，以及一个潜力大于信任的关系网络。"); return;

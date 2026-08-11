@@ -96,6 +96,8 @@ h2 { margin: 0; font-size: 18px; letter-spacing: -.025em; }
 .event-log { display: grid; grid-template-columns: minmax(220px,.7fr) 1.5fr; gap: 30px; margin-top: 14px; padding: 18px 20px; border: 1px solid var(--line); background: var(--ink); color: #edf2ef; }
 .event-heading { justify-content: flex-start; align-items: flex-start; flex-direction: column; gap: 5px; }
 .event-heading span { color: #9cafaa; }
+.narrator-status { margin-top: 5px; color: var(--gold); font: 500 8px/1.2 "Press Start 2P", monospace; }
+.narrator-status[data-live="true"] { color: var(--line); }
 .event-log p { margin: 0; color: #c5d0cb; line-height: 1.5; }
 .modal { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: rgba(14,31,25,.75); backdrop-filter: blur(8px); }
 .modal[hidden] { display: none; }
@@ -222,6 +224,7 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .deal-preview { color: #fff; font-family: "VT323", monospace; font-size: 17px; }
 .deal-actions button, .primary-action { border: 3px solid var(--line); color: #fff; background: #111b35; box-shadow: 4px 4px 0 var(--blue); font-family: "Press Start 2P", monospace; font-size: 9px; line-height: 1.4; }
 .deal-actions button:hover, .deal-actions button:focus-visible, .primary-action:hover { color: #000; background: var(--gold); box-shadow: 4px 4px 0 var(--red); }
+.deal-actions button:disabled { cursor: wait; opacity: .48; filter: grayscale(1); }
 .deal-actions button small { color: var(--muted); font-family: "VT323", monospace; font-size: 16px; }
 .network-track { height: 8px; border: 2px solid #fff; background: #101010; }
 .network-track span { background: linear-gradient(90deg, var(--blue), var(--line)); }
