@@ -6,7 +6,7 @@ Open `index.html` in a browser to play. No build step or dependencies are requir
 
 ## The simulation
 
-You begin in 2027 with $30 million and twenty quarterly decisions. Opportunities draw on the repository's Wall Street knowledge base:
+You choose an origin, starting capital and liquidity reserve, then make twenty quarterly decisions beginning in 2027. Each deal also lets you change the capital at risk and debt multiplier. Opportunities draw on the repository's Wall Street knowledge base:
 
 - leveraged buyouts and control rights;
 - distressed debt and claim priority;

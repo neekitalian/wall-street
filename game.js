@@ -5,7 +5,9 @@ const copy = {
     reputation: "REPUTATION", fragility: "FRAGILITY", balance: "Balance Sheet", deal: "The Deal Room",
     network: "Power Network", rate: "BASE RATE", credit: "CREDIT", market: "MARKET", lesson: "CURRENT LESSON",
     formula: "OWNERSHIP × CASH FLOW × TIME", formulaSub: "Leverage accelerates both directions.", latest: "LATEST EVENT",
-    decision: "Choose one. The quarter advances after your decision.", playAgain: "Play again",
+    decision: "Choose one. The quarter advances after your decision.", playAgain: "Play again", allocation: "CAPITAL AT RISK",
+    leverage: "DEBT MULTIPLIER", setupTitle: "Choose your starting position", setupIntro: "Wealth changes the deals you can access. Your origin changes the advantages—and obligations—you begin with.",
+    capital: "STARTING CAPITAL", reserve: "INITIAL CASH RESERVE", begin: "Begin mandate",
     assets: ["Cash", "Public equity", "Private equity", "Real estate"],
     people: ["Bankers", "Investors", "Boards", "Operators"],
     endKicker: "FINAL INVESTMENT COMMITTEE"
@@ -16,7 +18,9 @@ const copy = {
     reputation: "信誉", fragility: "脆弱度", balance: "资产负债表", deal: "交易室",
     network: "权力网络", rate: "基准利率", credit: "信贷", market: "市场", lesson: "本回合认知",
     formula: "所有权 × 现金流 × 时间", formulaSub: "杠杆会同时加速两个方向。", latest: "最新事件",
-    decision: "选择一个方案。决策后进入下一季度。", playAgain: "再玩一次",
+    decision: "选择一个方案。决策后进入下一季度。", playAgain: "再玩一次", allocation: "风险资本比例",
+    leverage: "债务倍数", setupTitle: "选择你的起点", setupIntro: "财富规模决定可参与的交易；出身决定你最初拥有的优势与义务。",
+    capital: "初始资本", reserve: "初始现金储备", begin: "开始管理",
     assets: ["现金", "上市股权", "私人股权", "房地产"],
     people: ["银行家", "投资人", "董事会", "经营者"],
     endKicker: "最终投资委员会"
@@ -101,14 +105,26 @@ const events = [
 
 let lang = "en";
 let state;
+let settings = { capital: 1, reserve: 40, origin: "professional", allocation: 50, leverage: 1 };
+
+const origins = [
+  { id: "builder", name: ["Builder", "创业者"], note: ["More control, weaker network", "控制权较强，关系较弱"], control: 12, reputation: -8, network: -8 },
+  { id: "professional", name: ["Professional", "专业人士"], note: ["Balanced default", "相对均衡的起点"], control: 0, reputation: 0, network: 0 },
+  { id: "heir", name: ["Heir", "继承者"], note: ["Strong access, less autonomy", "准入更强，自主权较低"], control: -10, reputation: 8, network: 15 },
+  { id: "fund", name: ["Fund operator", "基金经理"], note: ["Outside capital, high pressure", "管理外部资本，压力更大"], control: 4, reputation: 5, network: 10 }
+];
 
 function initialState() {
-  return { turn: 1, cash: 9, public: 11, private: 8, realEstate: 2, debt: 0, control: 38, reputation: 50,
-    fragility: 12, rate: 4.2, credit: "OPEN", sentiment: "OPTIMISTIC", bankers: 48, investors: 45,
-    boards: 36, operators: 44, lastEvent: 0, currentDeal: 0, ended: false };
+  const origin = origins.find(x => x.id === settings.origin); const liquid = settings.capital * settings.reserve / 100; const invested = settings.capital - liquid;
+  return { turn: 1, startCapital: settings.capital, target: Math.max(30, settings.capital * 10), cash: liquid, public: invested * .5, private: invested * .4, realEstate: invested * .1, debt: 0,
+    control: 38 + origin.control, reputation: 50 + origin.reputation, fragility: settings.origin === "fund" ? 22 : 12, rate: 4.2, credit: "OPEN", sentiment: "OPTIMISTIC",
+    bankers: 48 + origin.network, investors: 45 + origin.network, boards: 36 + origin.network, operators: 44 + (settings.origin === "builder" ? 12 : origin.network), lastEvent: 0, currentDeal: 0, ended: false };
 }
 
 function invest(s, cashCost, debtAdded, assetGain, controlGain, reputationGain, fragilityGain) {
+  const scale = (s.startCapital / 30) * (settings.allocation / 50);
+  cashCost *= scale; assetGain *= scale; debtAdded *= scale * settings.leverage;
+  controlGain *= Math.min(1, .35 + scale); fragilityGain *= Math.max(.4, settings.leverage);
   if (s.cash < cashCost) {
     const gap = cashCost - s.cash;
     s.debt += gap;
@@ -168,14 +184,29 @@ function render() {
   setText("creditLabel", c.credit); setText("sentimentLabel", c.market); setText("lessonLabel", c.lesson);
   setText("wealthFormula", c.formula); setText("formulaSub", c.formulaSub); setText("eventLabel", c.latest);
   setText("decisionPrompt", c.decision); setText("playAgainButton", c.playAgain); setText("endKicker", c.endKicker);
+  setText("allocationLabel", c.allocation); setText("leverageLabel", c.leverage); setText("allocationValue", `${settings.allocation}%`); setText("leverageValue", `${settings.leverage.toFixed(1)}×`);
+  setText("setupTitle", c.setupTitle); setText("setupIntro", c.setupIntro); setText("capitalLabel", c.capital); setText("reserveLabel", c.reserve); setText("beginButton", c.begin);
   const year = 2027 + Math.floor((state.turn - 1) / 4), quarter = ((state.turn - 1) % 4) + 1;
   setText("quarterLabel", `${year} Q${quarter} · ${lang === "en" ? "TURN" : "回合"} ${Math.min(state.turn,20)}/20`);
   setText("netWorth", money(netWorth())); setText("liquidity", money(state.cash)); setText("debt", money(state.debt));
   setText("control", Math.round(state.control)); setText("reputation", Math.round(state.reputation)); setText("fragility", Math.round(state.fragility));
-  document.getElementById("goalProgress").style.width = `${clamp(netWorth(), 0, 100)}%`;
+  setText("goalCopy", `${lang === "en" ? "Goal" : "目标"} ${money(state.target)}`); document.getElementById("goalProgress").style.width = `${clamp(netWorth() / state.target * 100, 0, 100)}%`;
   setText("rateValue", `${Math.max(.1,state.rate).toFixed(1)}%`); setText("creditValue", state.credit); setText("sentimentValue", state.sentiment);
   setText("regimeBadge", state.sentiment === "OPTIMISTIC" ? (lang === "en" ? "EXPANSION" : "扩张") : (lang === "en" ? "CAUTION" : "谨慎"));
-  renderAssets(c); renderNetworks(c); renderDeal(); renderEvent();
+  renderAssets(c); renderNetworks(c); renderDeal(); renderEvent(); renderSetup(); renderPreview();
+}
+
+function renderSetup() {
+  setText("capitalValue", money(settings.capital)); setText("reserveValue", `${settings.reserve}%`);
+  document.getElementById("originOptions").innerHTML = origins.map(o => `<button class="origin-option" type="button" data-origin="${o.id}" aria-pressed="${settings.origin === o.id}"><strong>${pick(o.name)}</strong><small>${pick(o.note)}</small></button>`).join("");
+  document.querySelectorAll("[data-origin]").forEach(button => button.addEventListener("click", () => { settings.origin = button.dataset.origin; renderSetup(); }));
+}
+
+function renderPreview() {
+  const scale = state.startCapital / 30 * settings.allocation / 50;
+  const deal = opportunities[state.currentDeal]; const first = deal.actions[0];
+  const liquidity = state.cash * settings.allocation / 100; const debtCapacity = liquidity * settings.leverage;
+  setText("dealPreview", lang === "en" ? `Your mandate: up to ${money(liquidity)} cash + ${money(debtCapacity)} debt for this decision.` : `本次授权：最多投入 ${money(liquidity)} 现金，并使用 ${money(debtCapacity)} 债务。`);
 }
 
 function renderAssets(c) {
@@ -196,7 +227,12 @@ function renderDeal() {
   setText("dealType", pick(deal.type)); setText("lessonText", pick(deal.lesson));
   document.getElementById("dealContent").innerHTML = `<div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
   const actions = document.getElementById("dealActions"); actions.innerHTML = "";
-  deal.actions.forEach(action => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = `${pick(action.label)}<small>${pick(action.sub)}</small>`; b.addEventListener("click", () => chooseAction(action)); actions.appendChild(b); });
+  deal.actions.forEach(action => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = `${pick(action.label)}<small>${scaledTerms(pick(action.sub))}</small>`; b.addEventListener("click", () => chooseAction(action)); actions.appendChild(b); });
+}
+
+function scaledTerms(terms) {
+  const scale = state.startCapital / 30 * settings.allocation / 50; let index = 0;
+  return terms.replace(/\$(\d+(?:\.\d+)?)M/g, (_, raw) => { const debtTerm = index++ > 0 && /debt|债务/.test(terms); return money(Number(raw) * scale * (debtTerm ? settings.leverage : 1)); });
 }
 
 function renderEvent() {
@@ -213,7 +249,7 @@ function finishGame() {
   if (nw <= 0 || state.fragility >= 100) {
     title = lang === "en" ? "Forced liquidation" : "被迫清算";
     summary = lang === "en" ? "The thesis may have survived. Your funding did not. Leverage transferred control to creditors." : "投资逻辑也许还成立，但你的融资没有活下来。杠杆把控制权交给了债权人。";
-  } else if (nw >= 100 && state.fragility < 65) {
+  } else if (nw >= state.target && state.fragility < 65) {
     title = lang === "en" ? "A durable capital machine" : "可持续的资本机器";
     summary = lang === "en" ? "You compounded ownership without surrendering the liquidity needed to wait." : "你让所有权持续复利，同时保留了等待机会所需的流动性。";
   } else {
@@ -225,8 +261,13 @@ function finishGame() {
   document.getElementById("endModal").hidden = false;
 }
 
-function restart() { state = initialState(); document.getElementById("endModal").hidden = true; render(); }
+function restart() { state = initialState(); document.getElementById("endModal").hidden = true; document.getElementById("setupModal").hidden = false; render(); }
 document.getElementById("languageButton").addEventListener("click", () => { lang = lang === "en" ? "zh" : "en"; render(); });
 document.getElementById("restartButton").addEventListener("click", restart);
 document.getElementById("playAgainButton").addEventListener("click", restart);
+document.getElementById("allocationSlider").addEventListener("input", e => { settings.allocation = Number(e.target.value); render(); });
+document.getElementById("leverageSlider").addEventListener("input", e => { settings.leverage = Number(e.target.value); render(); });
+document.getElementById("capitalSlider").addEventListener("input", e => { settings.capital = Number(e.target.value); state = initialState(); render(); });
+document.getElementById("reserveSlider").addEventListener("input", e => { settings.reserve = Number(e.target.value); state = initialState(); render(); });
+document.getElementById("beginButton").addEventListener("click", () => { state = initialState(); document.getElementById("setupModal").hidden = true; render(); });
 restart();

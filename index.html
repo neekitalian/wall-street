@@ -64,6 +64,17 @@
           <span id="dealType" class="deal-type">BUYOUT</span>
         </div>
         <div id="dealContent"></div>
+        <div class="deal-controls">
+          <div class="control-line">
+            <label for="allocationSlider"><span id="allocationLabel">CAPITAL AT RISK</span><strong id="allocationValue">50%</strong></label>
+            <input id="allocationSlider" type="range" min="20" max="100" step="10" value="50">
+          </div>
+          <div class="control-line">
+            <label for="leverageSlider"><span id="leverageLabel">DEBT MULTIPLIER</span><strong id="leverageValue">1.0×</strong></label>
+            <input id="leverageSlider" type="range" min="0" max="3" step="0.5" value="1">
+          </div>
+          <p id="dealPreview" class="deal-preview"></p>
+        </div>
         <div class="decision-area">
           <p id="decisionPrompt" class="decision-prompt"></p>
           <div id="dealActions" class="deal-actions"></div>
@@ -91,6 +102,26 @@
       <p id="eventText">You inherit a liquid $30M portfolio and a network with more potential than trust.</p>
     </section>
   </main>
+
+  <div id="setupModal" class="modal">
+    <div class="modal-card setup-card" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
+      <p class="eyebrow">CAPITAL ORIGIN</p>
+      <h2 id="setupTitle">Choose your starting position</h2>
+      <p id="setupIntro">Wealth changes the deals you can access. Your origin changes the advantages—and obligations—you begin with.</p>
+      <div id="originOptions" class="origin-options"></div>
+      <div class="setup-controls">
+        <div class="control-line">
+          <label for="capitalSlider"><span id="capitalLabel">STARTING CAPITAL</span><strong id="capitalValue">$1.0M</strong></label>
+          <input id="capitalSlider" type="range" min="0.25" max="10" step="0.25" value="1">
+        </div>
+        <div class="control-line">
+          <label for="reserveSlider"><span id="reserveLabel">INITIAL CASH RESERVE</span><strong id="reserveValue">40%</strong></label>
+          <input id="reserveSlider" type="range" min="10" max="80" step="5" value="40">
+        </div>
+      </div>
+      <button id="beginButton" class="primary-action" type="button">Begin mandate</button>
+    </div>
+  </div>
 
   <div id="endModal" class="modal" hidden>
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
