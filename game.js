@@ -7,7 +7,7 @@ const copy = {
     formula: "OWNERSHIP × CASH FLOW × TIME", formulaSub: "Leverage accelerates both directions.", latest: "LATEST EVENT",
     decision: "Choose one. The quarter advances after your decision.", playAgain: "Play again", allocation: "CAPITAL AT RISK",
     leverage: "DEBT MULTIPLIER", setupTitle: "Choose your starting position", setupIntro: "Wealth changes the deals you can access. Your origin changes the advantages—and obligations—you begin with.",
-    capital: "MANDATE CAPITAL", begin: "Begin solo mandate", online: "Online table", aiCalling: "RALPH IS CALLING…", aiLive: "AI DEAL DESK", offline: "OFFLINE DECK",
+    capital: "MANDATE CAPITAL", begin: "Begin solo mandate", online: "Online table", aiCalling: "RALPH IS PREPARING A BRIEFING…", aiLive: "MARKET BRIEFING", offline: "OFFLINE BRIEFING",
     assets: ["Cash", "Public equity", "Private equity", "Real estate"],
     people: ["Bankers", "Investors", "Boards", "Operators"],
     endKicker: "FINAL INVESTMENT COMMITTEE"
@@ -20,7 +20,7 @@ const copy = {
     formula: "所有权 × 现金流 × 时间", formulaSub: "杠杆会同时加速两个方向。", latest: "最新事件",
     decision: "选择一个方案。决策后进入下一季度。", playAgain: "再玩一次", allocation: "风险资本比例",
     leverage: "债务倍数", setupTitle: "选择你的起点", setupIntro: "财富规模决定可参与的交易；出身决定你最初拥有的优势与义务。",
-    capital: "委托资本", begin: "开始单人游戏", online: "在线交易桌", aiCalling: "RALPH 来电中…", aiLive: "AI交易台", offline: "离线事件牌",
+    capital: "委托资本", begin: "开始单人游戏", online: "在线交易桌", aiCalling: "RALPH 正在准备简报……", aiLive: "市场简报", offline: "离线简报",
     assets: ["现金", "上市股权", "私人股权", "房地产"],
     people: ["银行家", "投资人", "董事会", "经营者"],
     endKicker: "最终投资委员会"
@@ -251,7 +251,10 @@ function renderNetworks(c) {
 function renderDeal() {
   const deal = opportunities[state.currentDeal];
   setText("dealType", pick(deal.type)); setText("lessonText", pick(deal.lesson));
-  document.getElementById("dealContent").innerHTML = `<div class="pixel-stage"><div class="office-scene" role="img" aria-label="${lang === "en" ? "New York deal office overlooking Manhattan" : "俯瞰曼哈顿的纽约交易办公室"}"></div><div class="broker-card"><div class="pixel-face"><i></i><b></b><em></em></div><strong>${lang === "en" ? "RALPH · DEAL DESK" : "RALPH · 交易台"}</strong></div></div><div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
+  const briefing = lang === "en"
+    ? ["RALPH · MARKET BRIEFING", "After each decision, Ralph explains what changed and why. Commentary only. The game rules control every number."]
+    : ["RALPH · 市场简报", "每次决策后，Ralph 会解释发生了什么以及原因。他只负责解说，所有数字均由游戏规则决定。"];
+  document.getElementById("dealContent").innerHTML = `<div class="pixel-stage"><div class="office-scene" role="img" aria-label="${lang === "en" ? "New York deal office overlooking Manhattan" : "俯瞰曼哈顿的纽约交易办公室"}"></div><aside class="market-briefing"><div class="pixel-face" aria-hidden="true"><i></i><b></b><em></em></div><div><strong>${briefing[0]}</strong><p>${briefing[1]}</p></div></aside></div><div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
   const actions = document.getElementById("dealActions"); actions.innerHTML = "";
   deal.actions.forEach(action => { const b = document.createElement("button"); b.type = "button"; b.disabled = state.aiLoading; b.innerHTML = `${pick(action.label)}<small>${scaledTerms(pick(action.sub))}</small>`; b.addEventListener("click", () => chooseAction(action)); actions.appendChild(b); });
 }
@@ -266,7 +269,7 @@ function renderEvent() {
   setText("narratorStatus", state.aiLoading ? copy[lang].aiCalling : state.aiNarration ? copy[lang].aiLive : copy[lang].offline);
   if (state.aiLoading) {
     setText("eventTitle", lang === "en" ? "Connecting to Ralph" : "正在连接 Ralph");
-    setText("eventText", lang === "en" ? "The deterministic books are closed. The deal desk is preparing its reaction." : "本回合的确定性账本已经结算，交易台正在准备回应。"); return;
+    setText("eventText", lang === "en" ? "The game has settled the numbers. Ralph is preparing a plain-language explanation." : "游戏已经完成数字结算。Ralph 正在准备一份易懂的说明。"); return;
   }
   if (state.aiNarration) {
     setText("eventTitle", `${state.aiNarration.speaker} · ${state.aiNarration.complication}`);
