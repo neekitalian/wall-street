@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A compact strategy game about ownership, leverage, liquidity and control.">
+  <title>Capital Machine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">FAMILY OFFICE SIMULATION</p>
+        <h1>Capital Machine</h1>
+      </div>
+      <div class="topbar-actions">
+        <button id="languageButton" class="quiet-button" type="button">中文</button>
+        <button id="restartButton" class="quiet-button" type="button">Restart</button>
+      </div>
+    </header>
+
+    <section class="mission" aria-label="Game objective">
+      <div>
+        <span id="quarterLabel" class="mono">2027 Q1 · TURN 1/20</span>
+        <p id="missionCopy">Turn $30M into durable wealth. Survive the path, not just the forecast.</p>
+      </div>
+      <div class="goal-meter" aria-label="Progress toward one hundred million dollars">
+        <div class="goal-meter-label"><span id="wealthLabel">NET WORTH</span><strong id="netWorth">$30.0M</strong></div>
+        <div class="goal-track"><span id="goalProgress"></span></div>
+        <small id="goalCopy">Goal $100M</small>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Key portfolio metrics">
+      <article><span id="liquidityLabel">LIQUIDITY</span><strong id="liquidity">$9.0M</strong></article>
+      <article><span id="debtLabel">DEBT</span><strong id="debt">$0.0M</strong></article>
+      <article><span id="controlLabel">CONTROL</span><strong id="control">38</strong></article>
+      <article><span id="reputationLabel">REPUTATION</span><strong id="reputation">50</strong></article>
+      <article><span id="fragilityLabel">FRAGILITY</span><strong id="fragility">12</strong></article>
+    </section>
+
+    <section class="game-grid">
+      <aside class="panel balance-panel">
+        <div class="panel-heading">
+          <div><p class="section-number">01</p><h2 id="balanceTitle">Balance Sheet</h2></div>
+          <span id="regimeBadge" class="regime">EXPANSION</span>
+        </div>
+        <div id="assetList" class="asset-list"></div>
+        <div class="allocation-bar" id="allocationBar" aria-label="Asset allocation"></div>
+        <div class="market-tape">
+          <div><span id="rateLabel">BASE RATE</span><strong id="rateValue">4.2%</strong></div>
+          <div><span id="creditLabel">CREDIT</span><strong id="creditValue">OPEN</strong></div>
+          <div><span id="sentimentLabel">MARKET</span><strong id="sentimentValue">OPTIMISTIC</strong></div>
+        </div>
+      </aside>
+
+      <section class="panel deal-panel">
+        <div class="panel-heading">
+          <div><p class="section-number">02</p><h2 id="dealTitle">The Deal Room</h2></div>
+          <span id="dealType" class="deal-type">BUYOUT</span>
+        </div>
+        <div id="dealContent"></div>
+        <div class="decision-area">
+          <p id="decisionPrompt" class="decision-prompt"></p>
+          <div id="dealActions" class="deal-actions"></div>
+        </div>
+      </section>
+
+      <aside class="panel network-panel">
+        <div class="panel-heading">
+          <div><p class="section-number">03</p><h2 id="networkTitle">Power Network</h2></div>
+        </div>
+        <div id="networkList" class="network-list"></div>
+        <div class="lesson-box">
+          <span id="lessonLabel">CURRENT LESSON</span>
+          <p id="lessonText">Liquidity is the right to wait.</p>
+        </div>
+        <div class="legend">
+          <p id="wealthFormula">OWNERSHIP × CASH FLOW × TIME</p>
+          <small id="formulaSub">Leverage accelerates both directions.</small>
+        </div>
+      </aside>
+    </section>
+
+    <section class="event-log" aria-live="polite">
+      <div class="event-heading"><span id="eventLabel">LATEST EVENT</span><strong id="eventTitle">The mandate begins</strong></div>
+      <p id="eventText">You inherit a liquid $30M portfolio and a network with more potential than trust.</p>
+    </section>
+  </main>
+
+  <div id="endModal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+      <p id="endKicker" class="eyebrow">FINAL INVESTMENT COMMITTEE</p>
+      <h2 id="endTitle"></h2>
+      <p id="endSummary"></p>
+      <div id="endStats" class="end-stats"></div>
+      <button id="playAgainButton" class="primary-action" type="button">Play again</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
