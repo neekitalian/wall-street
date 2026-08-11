@@ -1,50 +1,68 @@
 # Capital Machine
 
-A book can describe a deal. A game forces a choice.
+A book can describe a deal. A game lets you ruin it yourself.
 
-Capital Machine converts classic Wall Street books into a working system of incentives, claims and consequences. The names and dates are removed. The machinery remains.
+Capital Machine is a retro Wall Street strategy game about money, power and the inconvenient arrival of debt service.
 
-The player does not answer questions about the books. The player enters the position of the people inside them.
+You begin with capital and a reputation. Soon a banker is calling, a fund wants control, a creditor has found the covenant you ignored and Ralph from the deal desk insists that this is an opportunity.
 
-## The books become rules
+It may be an opportunity.
 
-**Liar's Poker** explains the bond desk. A product passes from institution to salesperson to trader to client. Each person sees a different price and earns a different spread. In the game, relationships create access, inventory creates risk and reputation survives longer than a single trade.
+## Sit at the table
 
-**Barbarians at the Gate** explains the leveraged buyout. A company can be purchased with money borrowed against the company itself. In the game, the purchase price is only the first number. Debt service, board control and management incentives decide whether ownership produces value.
+Every turn presents a decision with somebody else's interests hidden inside it.
 
-**Den of Thieves** explains information as capital. Information can create an edge before it becomes public. It can also destroy the person who uses it. In the game, speed has value, but legality, enforcement and reputation remain on the balance sheet.
+Borrowing can make a small equity check control a large company. It can also give the bank a hand on the steering wheel.
 
-**More Money Than God** shows that a hedge fund is not one strategy. Macro, long and short equity, arbitrage, activism and event driven investing each require a different edge. In the game, every opportunity has its own horizon, liquidity demand and method of failure.
+Holding cash can look timid. It becomes brilliant when everyone else needs to sell.
 
-**When Genius Failed** explains the danger of being correct too early. A small price difference can support a large position when leverage is available. The same leverage can force liquidation before prices converge. In the game, a thesis must survive its path. Accuracy alone is insufficient.
+A cheap security can become cheaper. A correct thesis can still go bankrupt. A friendly creditor can discover religion at the exact moment a payment is missed.
 
-**The Big Short** explains that seeing a bad price is not enough. A position needs an instrument, a counterparty, a catalyst and enough cash to pay the carry. In the game, conviction consumes liquidity while time remains uncertain.
+The player can operate as a Founder, PE Fund, Bank, Hedge Fund or Creditor. Each role sees the same company through a different claim. The Founder wants time. The PE Fund wants control. The Bank wants protection. The Hedge Fund wants a price error. The Creditor wants priority.
 
-**The Man Who Solved the Market** explains the industrial production of small edges. No single signal needs to be impressive. The system matters. In the game, statistical advantage gains value through sizing, repetition, diversification and execution.
+Their decisions meet on one balance sheet.
 
-**The Caesars Palace Coup** explains what remains when equity loses control. Secured claims, legal entities, collateral and voting rights become the real map of the company. In the game, distress changes the objective. The question is no longer whether the company has value. The question is who can claim it.
+## Build the machine
 
-## The common machine
-
-Every source is translated into four things.
-
-The role identifies who decides.
-
-The resource identifies what can be spent or withheld.
-
-The action identifies what the player can do now.
-
-The failure condition identifies who gains power when the plan breaks.
-
-Founder, PE Fund, Bank, Hedge Fund and Creditor can look at the same company and see five different games. Their actions share one ledger. One player's asset can be another player's claim. One player's liquidity can be another player's exit.
-
-The machine follows a simple relation:
+The game follows a simple relation:
 
 > **Ownership × Cash Flow × Time**
 
 Leverage changes the speed. Liquidity determines whether time is available. Control decides who may act.
 
-The game does not reproduce the books. It uses their recurring logic to produce new situations.
+The object is not merely to finish with the largest number. A capital machine must remain alive. It needs enough liquidity to survive bad marks, enough control to execute its plan and enough reputation to receive the next call.
+
+Every scenario is built from four parts.
+
+The role identifies who decides.
+
+The resource identifies what can be spent or withheld.
+
+The action identifies what can be done now.
+
+The failure condition identifies who gains power when the plan breaks.
+
+This produces a game where success is satisfying and failure is usually educational, expensive and slightly funny.
+
+## The books behind the machine
+
+Capital Machine converts classic Wall Street books into playable rules. The historical names and dates are removed. The machinery remains.
+
+**Liar's Poker** supplies bond desks, spreads, inventory, sales incentives and the knowledge that the customer is not always the winner.
+
+**Barbarians at the Gate** supplies leveraged buyouts, auctions, boardroom conflict and the pleasure of buying a company with money the company must repay.
+
+**Den of Thieves** supplies merger arbitrage, information networks, enforcement risk and the dangerous difference between being early and being informed.
+
+**More Money Than God** supplies macro, long and short equity, arbitrage, activism and the idea that a hedge fund is a structure rather than a single strategy.
+
+**When Genius Failed** supplies convergence trades, enormous leverage, vanishing liquidity and the discovery that a model cannot answer a margin call.
+
+**The Big Short** supplies mispricing, CDS, carry, catalysts and counterparties. Seeing the problem is easy. Financing the position until everyone else sees it is the game.
+
+**The Man Who Solved the Market** supplies signals, small statistical edges, portfolio construction and the industrial repetition of good decisions.
+
+**The Caesars Palace Coup** supplies secured claims, legal entities, collateral, creditor coalitions and the moment when the capital structure becomes the battlefield.
 
 The supporting research is contained in the [knowledge system](wall-street-capital-games/). It contains synthesized frameworks, not copies of the source texts.
 
