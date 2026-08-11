@@ -1,67 +1,112 @@
 # Capital Machine
 
-An interactive, bilingual strategy game about how institutional wealth compounds through ownership, cash flow, leverage, liquidity and control.
+**A retro strategy game about how capital becomes power.**
 
-The interface uses an original retro trading-game style inspired by early PC financial simulators: pixel typography, CRT color, broker dialogue and a deal console.
+Capital Machine puts the player inside the decisions that shape institutional wealth: buying control, borrowing against cash flow, protecting liquidity, negotiating with creditors and surviving long enough for a thesis to work.
 
-Open `index.html` in a browser to play. No build step or dependencies are required.
+This is not a stock-picking simulator. It is a game about ownership, incentives and the capital structure.
 
-The built-in event deck works offline. With the optional Replicate backend, Ralph's deal-desk dialogue is generated from the completed turn while every financial calculation remains deterministic.
+## The idea
 
-## The simulation
+Wealth does not grow from returns alone. It grows through a system:
 
-You choose an origin and liquidity reserve, then make twenty quarterly decisions beginning in 2027. Solo mode starts with a fixed $1M mandate; players cannot customize the base capital. Each deal still lets you change the capital at risk and debt multiplier. Opportunities draw on the repository's Wall Street knowledge base:
+> **Ownership × Cash Flow × Time**
 
-- leveraged buyouts and control rights;
+Leverage can accelerate that system, but it also increases fragility. Liquidity buys time. Control determines who can act. Reputation and relationships affect which deals become available. Debt decides who has power when the optimistic case fails.
+
+The game is built around five principles:
+
+1. **Control is different from ownership.** A smaller economic stake can still carry decisive voting, board or covenant rights.
+2. **Liquidity is strategic.** Cash is not idle when it preserves optionality and prevents forced selling.
+3. **Leverage magnifies both directions.** It can concentrate gains, but it transfers power to lenders when cash flow weakens.
+4. **Every asset is someone else's liability or claim.** The same company looks different to its founder, owner, bank and creditors.
+5. **Survival precedes compounding.** A strong thesis has no value if its financing cannot survive the path to realization.
+
+## How the game works
+
+### Solo mandate
+
+Start with a fixed **$1M mandate** and choose a capital origin. Over twenty quarterly turns, evaluate opportunities involving:
+
+- leveraged buyouts and operating control;
 - distressed debt and claim priority;
-- mispricing, catalysts and funding survival;
-- quantitative convergence trades and liquidity spirals;
-- private-company access, valuation and governance.
+- market mispricing, catalysts and funding risk;
+- quantitative convergence and liquidity spirals;
+- private-company valuation, access and governance.
 
-The objective is not simply to maximize terminal net worth. A successful capital machine must preserve liquidity, reputation and control while keeping fragility manageable.
+Each decision changes more than net worth. The player must manage cash, debt, control, reputation, relationships and fragility. The objective is to build a capital machine that can keep operating—not simply to produce the highest final number.
 
-## Run locally
+### Online capital table
+
+Players occupy different sides of the same transaction:
+
+- **Founder** — operates the company and protects strategic control.
+- **PE Fund** — acquires, governs and improves the asset.
+- **Bank** — sets credit availability, pricing and covenants.
+- **Hedge Fund** — trades the structure, catalysts and downside.
+- **Creditor** — controls maturity, enforcement and restructuring leverage.
+
+Two modes are available:
+
+| Mode | Starting balance sheet | Seats |
+| --- | --- | --- |
+| **2 players** | $10M cash · $50M enterprise value · $15M debt | Two human roles and three conservative AI desks |
+| **5 players** | $20M cash · $100M enterprise value · $40M debt | Five human-controlled roles |
+
+Starting funds are determined by the mode and cannot be edited by players. Rooms use anonymous six-character codes, timed turns, server-side validation and reconnectable sessions.
+
+## Rules before narration
+
+All financial outcomes are deterministic and resolved by the game engine. Clients submit decisions, never balance-sheet values.
+
+Replicate can generate Ralph's deal-desk commentary after a turn, but AI narration cannot change cash, debt, returns or control. Generated scenarios are fictional educational material—not market forecasts or investment recommendations.
+
+## Visual direction
+
+Capital Machine uses an original late-1980s PC finance-game aesthetic: VGA pixel art, CRT colors, character portraits, Manhattan deal rooms and broker dialogue. The interface treats financial structure as a game board rather than a spreadsheet tutorial.
+
+## Play locally
+
+The offline solo game requires no build step:
 
 ```bash
 python3 -m http.server 8000
 ```
 
-Then visit `http://localhost:8000`.
+Open `http://localhost:8000`.
 
-## AI deal desk with Replicate
-
-The API token is server-side only. Copy `.env.example` to `.env.local`, add the token locally, and never commit that file. Run the full application with:
+To run the Vercel Functions locally:
 
 ```bash
 npx vercel dev
 ```
 
-For a deployment, configure `REPLICATE_API_TOKEN` in Vercel Project Settings → Environment Variables. `REPLICATE_MODEL` is optional. If the API is unconfigured or unavailable, the game automatically uses its offline event deck.
+## Enable online features
 
-Replicate narration never changes returns, cash, debt or control and must not be interpreted as an investment prediction.
+### Multiplayer
 
-## Multiplayer capital table
+1. Connect a Supabase database through the Vercel Marketplace.
+2. Run [`001_multiplayer.sql`](supabase/migrations/001_multiplayer.sql) and then [`002_two_player_mode.sql`](supabase/migrations/002_two_player_mode.sql) in the Supabase SQL Editor.
+3. Configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in Vercel.
+4. Mark the service-role value as Sensitive and redeploy.
 
-The online mode uses anonymous six-character rooms and five unique roles: Founder, PE Fund, Bank, Hedge Fund and Creditor. A room can use either of two server-defined modes:
+The multiplayer state is authoritative in Postgres and synchronizes every two seconds. Session tokens are stored on the player's device; only SHA-256 hashes are stored in the database.
 
-- **2 players:** fixed $10M cash, $50M enterprise value and $15M debt. The two players choose any two distinct roles; the other three desks follow conservative deterministic actions.
-- **5 players:** fixed $20M cash, $100M enterprise value and $40M debt. Every role is controlled by a player.
+### AI deal desk
 
-Players choose the mode and role, but cannot customize the starting balance sheet. Each role has an original pixel-art character portrait shown during selection, in the lobby and beside role-specific decisions. Every action is authenticated and validated by a Vercel Function. Shared financial state is resolved in a Postgres transaction; clients never submit balance-sheet values.
+Configure these server-side Vercel environment variables:
 
-To enable multiplayer:
+```text
+REPLICATE_API_TOKEN
+REPLICATE_MODEL=qwen/qwen3-235b-a22b-instruct-2507
+```
 
-1. Add Supabase from the Vercel Marketplace.
-2. Run [`supabase/migrations/001_multiplayer.sql`](supabase/migrations/001_multiplayer.sql), then [`supabase/migrations/002_two_player_mode.sql`](supabase/migrations/002_two_player_mode.sql), in the Supabase SQL editor.
-3. Configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as server-side Vercel environment variables.
-4. Redeploy.
+Mark `REPLICATE_API_TOKEN` as Sensitive. Never expose either secret in frontend JavaScript or commit it to Git.
 
-The service-role key must never be exposed in frontend JavaScript or committed to Git. Room sessions are random bearer tokens stored on each player's device; only SHA-256 hashes are stored in Postgres.
+If Replicate is unavailable, the game falls back to its offline event deck.
 
-The first multiplayer release synchronizes every two seconds and resumes automatically after a temporary disconnect. The database remains authoritative, so reconnecting clients reload the canonical room state.
+## Intellectual foundation
 
-## Knowledge base
+The scenarios draw on the histories of Wall Street trading desks, LBOs, hedge funds, quantitative strategies, merger arbitrage and distressed restructurings. The structured supporting knowledge lives in [`wall-street-capital-games/`](wall-street-capital-games/).
 
-The supporting agent skill lives in [`wall-street-capital-games/`](wall-street-capital-games/).
-
-This project is educational and is not investment, legal or tax advice.
+Capital Machine is an educational game. It is not investment, legal or tax advice.
