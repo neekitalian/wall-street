@@ -42,7 +42,7 @@ Replicate narration never changes returns, cash, debt or control and must not be
 
 ## Multiplayer capital table
 
-The online mode uses anonymous six-character rooms with five unique roles: Founder, PE Fund, Bank, Hedge Fund and Creditor. Every action is authenticated and validated by a Vercel Function. Shared financial state is resolved in a Postgres transaction; clients never submit balance-sheet values.
+The online mode uses anonymous six-character rooms with five unique roles: Founder, PE Fund, Bank, Hedge Fund and Creditor. Each role has an original pixel-art character portrait shown during selection, in the lobby and beside role-specific decisions. Every action is authenticated and validated by a Vercel Function. Shared financial state is resolved in a Postgres transaction; clients never submit balance-sheet values.
 
 To enable multiplayer:
 

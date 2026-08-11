@@ -251,6 +251,10 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .multi-head .quiet-button { min-width: 44px; font-size: 17px; }
 .multi-intro { margin: 18px 0; padding: 12px 15px; border-left: 5px solid var(--gold); background: #151323; }
 .multi-intro p { margin: 0; color: #fff; }
+.role-picker-preview { display: flex; align-items: center; gap: 16px; margin: 12px 0; padding: 10px; border: 3px solid var(--magenta); background: #111021; }
+.role-picker-preview img { width: 88px; height: 88px; object-fit: cover; border: 3px solid var(--line); image-rendering: pixelated; }
+.role-picker-preview span { display: block; color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
+.role-picker-preview strong { display: block; margin-top: 10px; color: var(--gold); font: 11px/1.4 "Press Start 2P", monospace; }
 .multi-form { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 12px; }
 .multi-form label { color: var(--muted); font-family: "Press Start 2P", monospace; font-size: 7px; line-height: 1.5; }
 .multi-form input, .multi-form select { width: 100%; margin-top: 8px; padding: 12px; border: 3px solid var(--blue); border-radius: 0; outline: none; color: #fff; background: #080d1a; font: 19px/1 "VT323", monospace; }
@@ -262,8 +266,10 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .room-status span, .room-metrics span { display: block; color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
 .room-status strong { display: block; margin-top: 8px; color: var(--gold); font: 10px/1.4 "Press Start 2P", monospace; }
 .seat-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; }
-.seat { min-height: 92px; padding: 11px; border: 3px dashed #384255; background: #080a10; }
+.seat { min-height: 190px; padding: 7px; border: 3px dashed #384255; background: #080a10; }
 .seat.occupied { border-style: solid; border-color: var(--blue); background: #0e1428; }
+.seat img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; margin-bottom: 9px; border: 2px solid #384255; opacity: .23; filter: grayscale(1); image-rendering: pixelated; }
+.seat.occupied img { border-color: var(--line); opacity: 1; filter: none; }
 .seat span { color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
 .seat strong { display: block; margin-top: 10px; overflow-wrap: anywhere; color: #fff; font-size: 19px; }
 .seat small { display: block; margin-top: 8px; color: var(--gold); font: 6px/1.4 "Press Start 2P", monospace; }
@@ -272,6 +278,8 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .room-metrics strong { display: block; margin-top: 8px; color: #fff; font-family: "Press Start 2P", monospace; font-size: 9px; }
 .room-event { margin: 12px 0; padding: 15px; border: 3px solid var(--magenta); color: #fff; background: #171025; font-size: 21px; }
 .role-prompt, .waiting-copy { color: var(--gold); text-align: center; }
+.active-player { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 10px 0; }
+.active-player img { width: 72px; height: 72px; border: 3px solid var(--line); object-fit: cover; image-rendering: pixelated; }
 .role-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
 .role-actions button { min-height: 65px; padding: 10px; border: 3px solid var(--line); color: #fff; background: #101a34; box-shadow: 4px 4px 0 var(--blue); font: 8px/1.5 "Press Start 2P", monospace; cursor: pointer; }
 .role-actions button:hover { color: #000; background: var(--gold); box-shadow: 4px 4px 0 var(--red); }
