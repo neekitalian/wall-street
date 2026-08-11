@@ -279,12 +279,20 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .room-metrics > div { padding: 11px 8px; background: #080a10; }
 .room-metrics strong { display: block; margin-top: 8px; color: #fff; font-family: "Press Start 2P", monospace; font-size: 9px; }
 .room-event { margin: 12px 0; padding: 15px; border: 3px solid var(--magenta); color: #fff; background: #171025; font-size: 21px; }
+.last-actions { display: flex; flex-wrap: wrap; gap: 7px; margin: -3px 0 12px; }
+.last-actions span { width: 100%; color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
+.last-actions strong { padding: 6px 8px; border: 2px solid var(--blue); color: #fff; background: #0e1428; font-size: 15px; font-weight: 400; }
 .role-prompt, .waiting-copy { color: var(--gold); text-align: center; }
+.role-objective { margin: 5px 0 0; color: #fff; text-align: center; font-size: 17px; }
+.turn-rule { margin: 9px 0 12px; padding: 10px; border-left: 4px solid var(--gold); color: #d7e9e7; background: #0d111d; font-size: 16px; }
 .active-player { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 10px 0; }
 .active-player img { width: 72px; height: 72px; border: 3px solid var(--line); object-fit: cover; image-rendering: pixelated; }
 .role-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
-.role-actions button { min-height: 65px; padding: 10px; border: 3px solid var(--line); color: #fff; background: #101a34; box-shadow: 4px 4px 0 var(--blue); font: 8px/1.5 "Press Start 2P", monospace; cursor: pointer; }
+.role-actions button { min-height: 118px; padding: 12px; border: 3px solid var(--line); color: #fff; text-align: left; background: #101a34; box-shadow: 4px 4px 0 var(--blue); cursor: pointer; }
+.role-actions button strong { display: block; color: var(--gold); font: 8px/1.5 "Press Start 2P", monospace; }
+.role-actions button small { display: block; margin-top: 9px; color: #d7e9e7; font: 16px/1.05 "VT323", monospace; }
 .role-actions button:hover { color: #000; background: var(--gold); box-shadow: 4px 4px 0 var(--red); }
+.role-actions button:hover strong, .role-actions button:hover small { color: #000; }
 .invite-button { display: block; width: 100%; margin-top: 12px; padding: 13px; border: 3px solid var(--magenta); color: #fff; background: #17102d; box-shadow: 4px 4px 0 var(--magenta); font: 8px/1.5 "Press Start 2P", monospace; cursor: pointer; }
 .invite-button:hover { color: #000; background: var(--gold); border-color: #fff; box-shadow: 4px 4px 0 var(--red); }
 .leave-room { display: block; margin: 20px auto 0; }
