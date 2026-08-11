@@ -1,4 +1,4 @@
-const DEFAULT_MODEL = "meta/meta-llama-3-8b-instruct";
+const DEFAULT_MODEL = "qwen/qwen3-235b-a22b-instruct-2507";
 const MAX_BODY_BYTES = 12000;
 
 function clean(value, max) {
@@ -43,6 +43,11 @@ function parseOutput(output) {
   return result;
 }
 
+function modelInput(model, prompt) {
+  const common = { prompt, temperature: 0.65, top_p: 0.9 };
+  return model.startsWith("meta/meta-llama") ? { ...common, max_new_tokens: 260 } : { ...common, max_tokens: 260 };
+}
+
 async function readPrediction(token, url, signal) {
   const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` }, signal });
   if (!response.ok) throw new Error(`Prediction status failed (${response.status})`);
@@ -73,7 +78,7 @@ module.exports = async function handler(req, res) {
     const response = await fetch(`https://api.replicate.com/v1/models/${model}/predictions`, {
       method: "POST", signal: controller.signal,
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", Prefer: "wait=20" },
-      body: JSON.stringify({ input: { prompt: promptFor(context), max_new_tokens: 260, temperature: 0.65, top_p: 0.9 } })
+      body: JSON.stringify({ input: modelInput(model, promptFor(context)) })
     });
     if (!response.ok) throw new Error(`Replicate request failed (${response.status}): ${clean(await response.text(), 200)}`);
     let prediction = await response.json();

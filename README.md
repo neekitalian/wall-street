@@ -40,6 +40,21 @@ For a deployment, configure `REPLICATE_API_TOKEN` in Vercel Project Settings →
 
 Replicate narration never changes returns, cash, debt or control and must not be interpreted as an investment prediction.
 
+## Multiplayer capital table
+
+The online mode uses anonymous six-character rooms with five unique roles: Founder, PE Fund, Bank, Hedge Fund and Creditor. Every action is authenticated and validated by a Vercel Function. Shared financial state is resolved in a Postgres transaction; clients never submit balance-sheet values.
+
+To enable multiplayer:
+
+1. Add Supabase from the Vercel Marketplace.
+2. Run [`supabase/migrations/001_multiplayer.sql`](supabase/migrations/001_multiplayer.sql) in the Supabase SQL editor.
+3. Configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as server-side Vercel environment variables.
+4. Redeploy.
+
+The service-role key must never be exposed in frontend JavaScript or committed to Git. Room sessions are random bearer tokens stored on each player's device; only SHA-256 hashes are stored in Postgres.
+
+The first multiplayer release synchronizes every two seconds and resumes automatically after a temporary disconnect. The database remains authoritative, so reconnecting clients reload the canonical room state.
+
 ## Knowledge base
 
 The supporting agent skill lives in [`wall-street-capital-games/`](wall-street-capital-games/).

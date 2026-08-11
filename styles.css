@@ -117,6 +117,8 @@ h2 { margin: 0; font-size: 18px; letter-spacing: -.025em; }
 .origin-option[aria-pressed="true"] { color: #fff; background: var(--green); border-color: var(--green); }
 .origin-option[aria-pressed="true"] small { color: #c7d8d1; }
 .setup-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 24px 0; }
+.setup-mode-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.online-action { background: #17102d; border-color: var(--magenta); box-shadow: 4px 4px 0 var(--magenta); }
 @media (max-width: 950px) {
   .game-grid { grid-template-columns: 1fr 1fr; }
   .deal-panel { grid-column: 1/-1; grid-row: 1; min-height: 480px; }
@@ -243,6 +245,37 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .origin-option[aria-pressed="true"] small { color: #391d10; }
 .end-stats { background: var(--blue); border-color: var(--blue); }
 .end-stats div { background: #08090d; }
+.multiplayer-modal { overflow-y: auto; }
+.multiplayer-card { width: min(850px, 100%); margin: auto; }
+.multi-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; }
+.multi-head .quiet-button { min-width: 44px; font-size: 17px; }
+.multi-intro { margin: 18px 0; padding: 12px 15px; border-left: 5px solid var(--gold); background: #151323; }
+.multi-intro p { margin: 0; color: #fff; }
+.multi-form { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 12px; }
+.multi-form label { color: var(--muted); font-family: "Press Start 2P", monospace; font-size: 7px; line-height: 1.5; }
+.multi-form input, .multi-form select { width: 100%; margin-top: 8px; padding: 12px; border: 3px solid var(--blue); border-radius: 0; outline: none; color: #fff; background: #080d1a; font: 19px/1 "VT323", monospace; }
+.multi-form input:focus, .multi-form select:focus { border-color: var(--line); }
+.multi-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.multi-error { min-height: 22px; margin: 10px 0; color: var(--red); font-size: 17px; }
+.room-status { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; margin: 20px 0 12px; border: 3px solid var(--line); background: var(--line); }
+.room-status > div { padding: 12px; background: #080d16; }
+.room-status span, .room-metrics span { display: block; color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
+.room-status strong { display: block; margin-top: 8px; color: var(--gold); font: 10px/1.4 "Press Start 2P", monospace; }
+.seat-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; }
+.seat { min-height: 92px; padding: 11px; border: 3px dashed #384255; background: #080a10; }
+.seat.occupied { border-style: solid; border-color: var(--blue); background: #0e1428; }
+.seat span { color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
+.seat strong { display: block; margin-top: 10px; overflow-wrap: anywhere; color: #fff; font-size: 19px; }
+.seat small { display: block; margin-top: 8px; color: var(--gold); font: 6px/1.4 "Press Start 2P", monospace; }
+.room-metrics { display: grid; grid-template-columns: repeat(6,1fr); gap: 2px; margin-top: 12px; border: 3px solid var(--blue); background: var(--blue); }
+.room-metrics > div { padding: 11px 8px; background: #080a10; }
+.room-metrics strong { display: block; margin-top: 8px; color: #fff; font-family: "Press Start 2P", monospace; font-size: 9px; }
+.room-event { margin: 12px 0; padding: 15px; border: 3px solid var(--magenta); color: #fff; background: #171025; font-size: 21px; }
+.role-prompt, .waiting-copy { color: var(--gold); text-align: center; }
+.role-actions { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.role-actions button { min-height: 65px; padding: 10px; border: 3px solid var(--line); color: #fff; background: #101a34; box-shadow: 4px 4px 0 var(--blue); font: 8px/1.5 "Press Start 2P", monospace; cursor: pointer; }
+.role-actions button:hover { color: #000; background: var(--gold); box-shadow: 4px 4px 0 var(--red); }
+.leave-room { display: block; margin: 20px auto 0; }
 
 @media (max-width: 950px) {
   .game-grid { grid-template-columns: 1fr 1fr; }
@@ -260,4 +293,8 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
   .broker-card > strong { display: none; }
   .origin-options { grid-template-columns: 1fr 1fr; }
   .modal-card { padding: 22px; }
+  .setup-mode-actions, .multi-buttons, .multi-form { grid-template-columns: 1fr; }
+  .seat-grid { grid-template-columns: 1fr 1fr; }
+  .room-metrics { grid-template-columns: repeat(2,1fr); }
+  .role-actions { grid-template-columns: 1fr; }
 }
