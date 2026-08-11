@@ -7,7 +7,7 @@ const copy = {
     formula: "OWNERSHIP × CASH FLOW × TIME", formulaSub: "Leverage accelerates both directions.", latest: "LATEST EVENT",
     decision: "Choose one. The quarter advances after your decision.", playAgain: "Play again", allocation: "CAPITAL AT RISK",
     leverage: "DEBT MULTIPLIER", setupTitle: "Choose your starting position", setupIntro: "Wealth changes the deals you can access. Your origin changes the advantages—and obligations—you begin with.",
-    capital: "STARTING CAPITAL", reserve: "INITIAL CASH RESERVE", begin: "Begin solo mandate", online: "Online table", aiCalling: "RALPH IS CALLING…", aiLive: "AI DEAL DESK", offline: "OFFLINE DECK",
+    capital: "MANDATE CAPITAL", capitalRule: "Fixed by game rules", reserve: "INITIAL CASH RESERVE", begin: "Begin solo mandate", online: "Online table", aiCalling: "RALPH IS CALLING…", aiLive: "AI DEAL DESK", offline: "OFFLINE DECK",
     assets: ["Cash", "Public equity", "Private equity", "Real estate"],
     people: ["Bankers", "Investors", "Boards", "Operators"],
     endKicker: "FINAL INVESTMENT COMMITTEE"
@@ -20,7 +20,7 @@ const copy = {
     formula: "所有权 × 现金流 × 时间", formulaSub: "杠杆会同时加速两个方向。", latest: "最新事件",
     decision: "选择一个方案。决策后进入下一季度。", playAgain: "再玩一次", allocation: "风险资本比例",
     leverage: "债务倍数", setupTitle: "选择你的起点", setupIntro: "财富规模决定可参与的交易；出身决定你最初拥有的优势与义务。",
-    capital: "初始资本", reserve: "初始现金储备", begin: "开始单人游戏", online: "在线交易桌", aiCalling: "RALPH 来电中…", aiLive: "AI交易台", offline: "离线事件牌",
+    capital: "委托资本", capitalRule: "由游戏规则固定", reserve: "初始现金储备", begin: "开始单人游戏", online: "在线交易桌", aiCalling: "RALPH 来电中…", aiLive: "AI交易台", offline: "离线事件牌",
     assets: ["现金", "上市股权", "私人股权", "房地产"],
     people: ["银行家", "投资人", "董事会", "经营者"],
     endKicker: "最终投资委员会"
@@ -105,7 +105,8 @@ const events = [
 
 let lang = "en";
 let state;
-let settings = { capital: 1, reserve: 40, origin: "professional", allocation: 50, leverage: 1 };
+const SOLO_BASE_CAPITAL = 1;
+let settings = { capital: SOLO_BASE_CAPITAL, reserve: 40, origin: "professional", allocation: 50, leverage: 1 };
 
 const origins = [
   { id: "builder", name: ["Builder", "创业者"], note: ["More control, weaker network", "控制权较强，关系较弱"], control: 12, reputation: -8, network: -8 },
@@ -210,7 +211,7 @@ function render() {
   setText("wealthFormula", c.formula); setText("formulaSub", c.formulaSub); setText("eventLabel", c.latest);
   setText("decisionPrompt", c.decision); setText("playAgainButton", c.playAgain); setText("endKicker", c.endKicker);
   setText("allocationLabel", c.allocation); setText("leverageLabel", c.leverage); setText("allocationValue", `${settings.allocation}%`); setText("leverageValue", `${settings.leverage.toFixed(1)}×`);
-  setText("setupTitle", c.setupTitle); setText("setupIntro", c.setupIntro); setText("capitalLabel", c.capital); setText("reserveLabel", c.reserve); setText("beginButton", c.begin); setText("onlineButton", c.online); setText("multiplayerButton", c.online);
+  setText("setupTitle", c.setupTitle); setText("setupIntro", c.setupIntro); setText("capitalLabel", c.capital); setText("capitalRule", c.capitalRule); setText("reserveLabel", c.reserve); setText("beginButton", c.begin); setText("onlineButton", c.online); setText("multiplayerButton", c.online);
   const year = 2027 + Math.floor((state.turn - 1) / 4), quarter = ((state.turn - 1) % 4) + 1;
   setText("quarterLabel", `${year} Q${quarter} · ${lang === "en" ? "TURN" : "回合"} ${Math.min(state.turn,20)}/20`);
   setText("netWorth", money(netWorth())); setText("liquidity", money(state.cash)); setText("debt", money(state.debt));
@@ -222,7 +223,7 @@ function render() {
 }
 
 function renderSetup() {
-  setText("capitalValue", money(settings.capital)); setText("reserveValue", `${settings.reserve}%`);
+  settings.capital = SOLO_BASE_CAPITAL; setText("capitalValue", money(SOLO_BASE_CAPITAL)); setText("reserveValue", `${settings.reserve}%`);
   document.getElementById("originOptions").innerHTML = origins.map(o => `<button class="origin-option" type="button" data-origin="${o.id}" aria-pressed="${settings.origin === o.id}"><strong>${pick(o.name)}</strong><small>${pick(o.note)}</small></button>`).join("");
   document.querySelectorAll("[data-origin]").forEach(button => button.addEventListener("click", () => { settings.origin = button.dataset.origin; renderSetup(); }));
 }
@@ -304,7 +305,6 @@ document.getElementById("restartButton").addEventListener("click", restart);
 document.getElementById("playAgainButton").addEventListener("click", restart);
 document.getElementById("allocationSlider").addEventListener("input", e => { settings.allocation = Number(e.target.value); render(); });
 document.getElementById("leverageSlider").addEventListener("input", e => { settings.leverage = Number(e.target.value); render(); });
-document.getElementById("capitalSlider").addEventListener("input", e => { settings.capital = Number(e.target.value); state = initialState(); render(); });
 document.getElementById("reserveSlider").addEventListener("input", e => { settings.reserve = Number(e.target.value); state = initialState(); render(); });
 document.getElementById("beginButton").addEventListener("click", () => { state = initialState(); document.getElementById("setupModal").hidden = true; render(); });
 restart();

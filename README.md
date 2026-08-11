@@ -10,7 +10,7 @@ The built-in event deck works offline. With the optional Replicate backend, Ralp
 
 ## The simulation
 
-You choose an origin, starting capital and liquidity reserve, then make twenty quarterly decisions beginning in 2027. Each deal also lets you change the capital at risk and debt multiplier. Opportunities draw on the repository's Wall Street knowledge base:
+You choose an origin and liquidity reserve, then make twenty quarterly decisions beginning in 2027. Solo mode starts with a fixed $1M mandate; players cannot customize the base capital. Each deal still lets you change the capital at risk and debt multiplier. Opportunities draw on the repository's Wall Street knowledge base:
 
 - leveraged buyouts and control rights;
 - distressed debt and claim priority;
@@ -42,12 +42,17 @@ Replicate narration never changes returns, cash, debt or control and must not be
 
 ## Multiplayer capital table
 
-The online mode uses anonymous six-character rooms with five unique roles: Founder, PE Fund, Bank, Hedge Fund and Creditor. Each role has an original pixel-art character portrait shown during selection, in the lobby and beside role-specific decisions. Every action is authenticated and validated by a Vercel Function. Shared financial state is resolved in a Postgres transaction; clients never submit balance-sheet values.
+The online mode uses anonymous six-character rooms and five unique roles: Founder, PE Fund, Bank, Hedge Fund and Creditor. A room can use either of two server-defined modes:
+
+- **2 players:** fixed $10M cash, $50M enterprise value and $15M debt. The two players choose any two distinct roles; the other three desks follow conservative deterministic actions.
+- **5 players:** fixed $20M cash, $100M enterprise value and $40M debt. Every role is controlled by a player.
+
+Players choose the mode and role, but cannot customize the starting balance sheet. Each role has an original pixel-art character portrait shown during selection, in the lobby and beside role-specific decisions. Every action is authenticated and validated by a Vercel Function. Shared financial state is resolved in a Postgres transaction; clients never submit balance-sheet values.
 
 To enable multiplayer:
 
 1. Add Supabase from the Vercel Marketplace.
-2. Run [`supabase/migrations/001_multiplayer.sql`](supabase/migrations/001_multiplayer.sql) in the Supabase SQL editor.
+2. Run [`supabase/migrations/001_multiplayer.sql`](supabase/migrations/001_multiplayer.sql), then [`supabase/migrations/002_two_player_mode.sql`](supabase/migrations/002_two_player_mode.sql), in the Supabase SQL editor.
 3. Configure `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` as server-side Vercel environment variables.
 4. Redeploy.
 

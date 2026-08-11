@@ -117,6 +117,8 @@ h2 { margin: 0; font-size: 18px; letter-spacing: -.025em; }
 .origin-option[aria-pressed="true"] { color: #fff; background: var(--green); border-color: var(--green); }
 .origin-option[aria-pressed="true"] small { color: #c7d8d1; }
 .setup-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 24px 0; }
+.fixed-capital { padding: 12px; border: 3px solid var(--gold); background: #161323; }
+.fixed-capital p { margin: 12px 0 0; color: var(--muted); font-size: 17px; }
 .setup-mode-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .online-action { background: #17102d; border-color: var(--magenta); box-shadow: 4px 4px 0 var(--magenta); }
 @media (max-width: 950px) {
@@ -251,6 +253,12 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .multi-head .quiet-button { min-width: 44px; font-size: 17px; }
 .multi-intro { margin: 18px 0; padding: 12px 15px; border-left: 5px solid var(--gold); background: #151323; }
 .multi-intro p { margin: 0; color: #fff; }
+.mode-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mode-option { padding: 14px; border: 3px solid var(--blue); color: #fff; text-align: left; background: #080d1a; cursor: pointer; }
+.mode-option strong { display: block; color: var(--gold); font: 9px/1.5 "Press Start 2P", monospace; }
+.mode-option span { display: block; margin-top: 9px; color: var(--muted); font: 17px/1.15 "VT323", monospace; }
+.mode-option.selected { border-color: #fff; background: #18254b; box-shadow: 5px 5px 0 var(--magenta); }
+.fixed-fund-note { margin: 12px 0; color: var(--gold); font-size: 17px; }
 .role-picker-preview { display: flex; align-items: center; gap: 16px; margin: 12px 0; padding: 10px; border: 3px solid var(--magenta); background: #111021; }
 .role-picker-preview img { width: 88px; height: 88px; object-fit: cover; border: 3px solid var(--line); image-rendering: pixelated; }
 .role-picker-preview span { display: block; color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
@@ -261,7 +269,7 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
 .multi-form input:focus, .multi-form select:focus { border-color: var(--line); }
 .multi-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .multi-error { min-height: 22px; margin: 10px 0; color: var(--red); font-size: 17px; }
-.room-status { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; margin: 20px 0 12px; border: 3px solid var(--line); background: var(--line); }
+.room-status { display: grid; grid-template-columns: repeat(5,1fr); gap: 2px; margin: 20px 0 12px; border: 3px solid var(--line); background: var(--line); }
 .room-status > div { padding: 12px; background: #080d16; }
 .room-status span, .room-metrics span { display: block; color: var(--muted); font: 7px/1.4 "Press Start 2P", monospace; }
 .room-status strong { display: block; margin-top: 8px; color: var(--gold); font: 10px/1.4 "Press Start 2P", monospace; }
@@ -301,7 +309,8 @@ h2 { font-family: "Press Start 2P", monospace; font-size: 12px; line-height: 1.5
   .broker-card > strong { display: none; }
   .origin-options { grid-template-columns: 1fr 1fr; }
   .modal-card { padding: 22px; }
-  .setup-mode-actions, .multi-buttons, .multi-form { grid-template-columns: 1fr; }
+  .setup-mode-actions, .multi-buttons, .multi-form, .mode-options { grid-template-columns: 1fr; }
+  .room-status { grid-template-columns: 1fr 1fr; }
   .seat-grid { grid-template-columns: 1fr 1fr; }
   .room-metrics { grid-template-columns: repeat(2,1fr); }
   .role-actions { grid-template-columns: 1fr; }

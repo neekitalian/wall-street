@@ -8,7 +8,8 @@ module.exports = async function handler(req, res) {
   try {
     const auth = await authenticate(client, roomCode, rawToken); if (!auth || !auth.player.is_host) return res.status(403).json({ error: "Only the host can start" });
     const { count } = await client.from("cm_players").select("id", { count: "exact", head: true }).eq("room_id", auth.room.id);
-    if (count !== 5) return res.status(409).json({ error: "All five roles must be occupied" });
+    const playerLimit = auth.room.player_limit || 5;
+    if (count !== playerLimit) return res.status(409).json({ error: `All ${playerLimit} player seats must be occupied` });
     const deadline = new Date(Date.now() + 90000).toISOString();
     const { data: room, error } = await client.from("cm_rooms").update({ status: "active", deadline, version: auth.room.version + 1 }).eq("id", auth.room.id).eq("status", "lobby").select().single();
     if (error) throw error;

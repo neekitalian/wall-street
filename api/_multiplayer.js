@@ -40,7 +40,7 @@ async function authenticate(client, roomCode, rawToken) {
   if (!roomCode || !rawToken) return null;
   const { data } = await client.from("cm_players").select("id,room_id,role,name,is_host").eq("session_hash", hash(rawToken)).maybeSingle();
   if (!data) return null;
-  const { data: room } = await client.from("cm_rooms").select("id,code,status,turn,version,state,deadline").eq("id", data.room_id).eq("code", roomCode).maybeSingle();
+  const { data: room } = await client.from("cm_rooms").select("id,code,status,turn,version,state,deadline,player_limit").eq("id", data.room_id).eq("code", roomCode).maybeSingle();
   return room ? { player: data, room } : null;
 }
 
@@ -49,7 +49,7 @@ async function publicState(client, room) {
   if (playerError) throw playerError;
   const { data: actions, error: actionError } = await client.from("cm_actions").select("role,choice,created_at").eq("room_id", room.id).eq("turn", room.turn);
   if (actionError) throw actionError;
-  return { code: room.code, status: room.status, turn: room.turn, version: room.version, state: room.state, deadline: room.deadline, players, submittedRoles: actions.map(item => item.role) };
+  return { code: room.code, status: room.status, turn: room.turn, version: room.version, state: room.state, deadline: room.deadline, playerLimit: room.player_limit || 5, players, submittedRoles: actions.map(item => item.role) };
 }
 
 module.exports = { ROLES, ACTIONS, db, code, token, hash, clean, guard, authenticate, publicState };

@@ -11,7 +11,7 @@ module.exports = async function handler(req, res) {
     if (auth.room.status === "active" && auth.room.deadline && new Date(auth.room.deadline).getTime() <= Date.now()) {
       await client.rpc("cm_timeout_turn", { target_room: auth.room.id, target_turn: auth.room.turn });
     }
-    const { data: currentRoom, error: roomError } = await client.from("cm_rooms").select("id,code,status,turn,version,state,deadline").eq("id", auth.room.id).single();
+    const { data: currentRoom, error: roomError } = await client.from("cm_rooms").select("id,code,status,turn,version,state,deadline,player_limit").eq("id", auth.room.id).single();
     if (roomError) throw roomError;
     return res.status(200).json({ player: auth.player, room: await publicState(client, currentRoom) });
   } catch (error) { console.error("rooms-state", error.message); return res.status(500).json({ error: "Could not load room" }); }
