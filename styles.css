@@ -116,9 +116,8 @@ h2 { margin: 0; font-size: 18px; letter-spacing: -.025em; }
 .origin-option small { margin-top: 6px; color: var(--muted); line-height: 1.35; }
 .origin-option[aria-pressed="true"] { color: #fff; background: var(--green); border-color: var(--green); }
 .origin-option[aria-pressed="true"] small { color: #c7d8d1; }
-.setup-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 24px 0; }
+.setup-controls { margin: 24px 0; }
 .fixed-capital { padding: 12px; border: 3px solid var(--gold); background: #161323; }
-.fixed-capital p { margin: 12px 0 0; color: var(--muted); font-size: 17px; }
 .setup-mode-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .online-action { background: #17102d; border-color: var(--magenta); box-shadow: 4px 4px 0 var(--magenta); }
 @media (max-width: 950px) {
