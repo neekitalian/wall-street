@@ -11,6 +11,7 @@
   };
   const isZh = () => document.documentElement.lang.startsWith("zh");
   const avatar = role => `assets/avatars/${role}.png`;
+  const invitedRoom = (new URLSearchParams(location.search).get("room") || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6);
   let session = null; let roomState = null; let pollTimer = null; let busy = false; let selectedPlayerLimit = 2;
 
   const modal = document.createElement("div");
@@ -38,6 +39,7 @@
     document.getElementById("multiplayerContent").innerHTML = `<div class="multi-intro"><p>${t("Create an anonymous room or join with a six-character code. Base funds are fixed by the selected game mode.", "创建匿名房间，或使用六位房间码加入。初始资金由所选游戏模式固定。")}</p></div><div class="mode-options"><button class="mode-option selected" data-player-limit="2" type="button"><strong>${t("2 PLAYERS","2 人模式")}</strong><span>${t("$10M cash · $50M enterprise value · 3 AI desks","现金 $10M · 企业价值 $50M · 3 个 AI 席位")}</span></button><button class="mode-option" data-player-limit="5" type="button"><strong>${t("5 PLAYERS","5 人模式")}</strong><span>${t("$20M cash · $100M enterprise value · all roles human","现金 $20M · 企业价值 $100M · 全部角色由玩家担任")}</span></button></div><p class="fixed-fund-note">${t("The base fund cannot be changed by players.","玩家不能修改初始资金。")}</p><div class="role-picker-preview"><img id="selectedRoleFace" src="${avatar("founder")}" alt=""><label class="role-picker-control"><span>${t("YOUR CHARACTER","你的角色")}</span><select id="multiRole">${Object.entries(roleCopy).map(([id,label]) => `<option value="${id}">${label[isZh()?1:0]}</option>`).join("")}</select></label></div><div class="multi-form"><label>${t("Display name","玩家名称")}<input id="multiName" maxlength="40" autocomplete="nickname"></label><label>${t("Room code (to join)","房间码（加入时填写）")}<input id="multiCode" maxlength="6" autocomplete="off"></label></div><p id="multiError" class="multi-error"></p><div class="multi-buttons"><button id="createRoom" class="primary-action" type="button">${t("Create room","创建房间")}</button><button id="joinRoom" class="primary-action" type="button">${t("Join room","加入房间")}</button></div>`;
     document.querySelectorAll("[data-player-limit]").forEach(button => button.addEventListener("click", () => { selectedPlayerLimit = Number(button.dataset.playerLimit); document.querySelectorAll("[data-player-limit]").forEach(option => option.classList.toggle("selected", option === button)); }));
     document.getElementById("multiRole").addEventListener("change", event => { document.getElementById("selectedRoleFace").src = avatar(event.target.value); });
+    if (invitedRoom.length === 6) document.getElementById("multiCode").value = invitedRoom;
     document.getElementById("createRoom").onclick = () => enterRoom("create"); document.getElementById("joinRoom").onclick = () => enterRoom("join");
   }
 
@@ -54,6 +56,21 @@
 
   function metric(label, value) { return `<div><span>${label}</span><strong>${value}</strong></div>`; }
   function countdown() { if (!roomState?.deadline || roomState.status !== "active") return "--"; return `${Math.max(0, Math.ceil((new Date(roomState.deadline).getTime() - Date.now()) / 1000))}s`; }
+  function invitationUrl() {
+    const base = location.protocol === "file:" ? "https://wall-street-eight.vercel.app/" : `${location.origin}${location.pathname}`;
+    const url = new URL(base); url.searchParams.set("online", "1"); url.searchParams.set("room", roomState.code); return url.toString();
+  }
+  async function shareInvitation() {
+    const url = invitationUrl();
+    const text = t(`Join my Capital Machine room ${roomState.code}. Choose your role and take a seat at the capital table.`, `加入我的 Capital Machine 房间 ${roomState.code}。选择你的角色，坐上资本交易桌。`);
+    try {
+      if (navigator.share) await navigator.share({ title: `Capital Machine · ${roomState.code}`, text, url });
+      else if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(`${text}\n${url}`); showError(t("Invitation copied to clipboard.", "邀请消息已复制。")); }
+      else {
+        const field = document.createElement("textarea"); field.value = `${text}\n${url}`; field.setAttribute("readonly", ""); field.style.position = "fixed"; field.style.opacity = "0"; document.body.appendChild(field); field.select(); document.execCommand("copy"); field.remove(); showError(t("Invitation copied to clipboard.", "邀请消息已复制。"));
+      }
+    } catch (error) { if (error.name !== "AbortError") showError(t("Could not share the invitation.", "无法分享邀请。")); }
+  }
   function renderRoom() {
     if (!session || !roomState) return renderEntry();
     const playersByRole = Object.fromEntries(roomState.players.map(player => [player.role, player])); const submitted = new Set(roomState.submittedRoles || []);
@@ -66,8 +83,9 @@
     else if (active && !submitted.has(session.player.role)) controls = `<div class="active-player"><img src="${avatar(session.player.role)}" alt=""><p class="role-prompt">${t("Your decision as","你当前的角色：")} ${roleCopy[session.player.role][isZh()?1:0]}</p></div><div class="role-actions">${actionCopy[session.player.role].map(([value,en,zh]) => `<button type="button" data-choice="${value}">${t(en,zh)}</button>`).join("")}</div>`;
     else if (active) controls = `<p class="waiting-copy">${t("Decision locked. Waiting for the other seats…","决策已锁定，等待其他席位……")}</p>`;
     else controls = `<p class="waiting-copy">${t("The game is complete.","本局已经结束。")}</p>`;
-    document.getElementById("multiplayerContent").innerHTML = `<div class="room-status"><div><span>${t("MODE","模式")}</span><strong>${roomState.playerLimit}P</strong></div><div><span>${t("TURN","回合")}</span><strong>${Math.min(roomState.turn,12)}/12</strong></div><div><span>${t("STATUS","状态")}</span><strong>${roomState.status.toUpperCase()}</strong></div><div><span>${t("YOUR ROLE","你的角色")}</span><strong>${roleCopy[session.player.role][isZh()?1:0]}</strong></div><div><span>${t("DEADLINE","剩余时间")}</span><strong>${countdown()}</strong></div></div><div class="seat-grid">${seats}</div>${metrics}<div class="room-event">${state.lastEvent || t("The table is assembling.","交易桌正在集结。")}</div><p id="multiError" class="multi-error"></p>${controls}<button id="leaveRoom" class="quiet-button leave-room" type="button">${t("Leave this device","在此设备退出")}</button>`;
+    document.getElementById("multiplayerContent").innerHTML = `<div class="room-status"><div><span>${t("MODE","模式")}</span><strong>${roomState.playerLimit}P</strong></div><div><span>${t("TURN","回合")}</span><strong>${Math.min(roomState.turn,12)}/12</strong></div><div><span>${t("STATUS","状态")}</span><strong>${roomState.status.toUpperCase()}</strong></div><div><span>${t("YOUR ROLE","你的角色")}</span><strong>${roleCopy[session.player.role][isZh()?1:0]}</strong></div><div><span>${t("DEADLINE","剩余时间")}</span><strong>${countdown()}</strong></div></div><div class="seat-grid">${seats}</div>${metrics}<div class="room-event">${state.lastEvent || t("The table is assembling.","交易桌正在集结。")}</div><p id="multiError" class="multi-error"></p>${controls}${roomState.status === "lobby" ? `<button id="shareRoom" class="invite-button" type="button">${t("Share invitation","分享邀请")}</button>` : ""}<button id="leaveRoom" class="quiet-button leave-room" type="button">${t("Leave this device","在此设备退出")}</button>`;
     const start = document.getElementById("startRoom"); if (start) start.onclick = startRoom;
+    const share = document.getElementById("shareRoom"); if (share) share.onclick = shareInvitation;
     document.querySelectorAll("[data-choice]").forEach(button => button.onclick = () => submitAction(button.dataset.choice));
     document.getElementById("leaveRoom").onclick = leaveRoom;
   }
