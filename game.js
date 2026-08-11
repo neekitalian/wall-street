@@ -177,7 +177,7 @@ function render() {
   const c = copy[lang];
   document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
   setText("languageButton", lang === "en" ? "中文" : "EN"); setText("restartButton", c.restart);
-  setText("missionCopy", c.mission); setText("wealthLabel", c.wealth); setText("goalCopy", c.goal);
+  setText("missionCopy", lang === "en" ? `Grow ${money(state.startCapital)} into ${money(state.target)}. Survive the path, not just the forecast.` : `把 ${money(state.startCapital)} 增长到 ${money(state.target)}。不仅要看对终局，更要活过过程。`); setText("wealthLabel", c.wealth); setText("goalCopy", c.goal);
   setText("liquidityLabel", c.liquidity); setText("debtLabel", c.debt); setText("controlLabel", c.control);
   setText("reputationLabel", c.reputation); setText("fragilityLabel", c.fragility); setText("balanceTitle", c.balance);
   setText("dealTitle", c.deal); setText("networkTitle", c.network); setText("rateLabel", c.rate);
@@ -225,7 +225,7 @@ function renderNetworks(c) {
 function renderDeal() {
   const deal = opportunities[state.currentDeal];
   setText("dealType", pick(deal.type)); setText("lessonText", pick(deal.lesson));
-  document.getElementById("dealContent").innerHTML = `<div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
+  document.getElementById("dealContent").innerHTML = `<div class="pixel-stage"><div class="pixel-phone"><i></i><b></b><span></span></div><div class="broker-card"><div class="pixel-face"><i></i><b></b><em></em></div><strong>${lang === "en" ? "RALPH · DEAL DESK" : "RALPH · 交易台"}</strong></div></div><div class="deal-hero"><h3>${pick(deal.title)}</h3><p>${pick(deal.body)}</p></div><div class="deal-numbers">${deal.stats.map(x => `<div><span>${x[0]}</span><strong>${x[1]}</strong></div>`).join("")}</div><p class="deal-risk">${pick(deal.risk)}</p>`;
   const actions = document.getElementById("dealActions"); actions.innerHTML = "";
   deal.actions.forEach(action => { const b = document.createElement("button"); b.type = "button"; b.innerHTML = `${pick(action.label)}<small>${scaledTerms(pick(action.sub))}</small>`; b.addEventListener("click", () => chooseAction(action)); actions.appendChild(b); });
 }

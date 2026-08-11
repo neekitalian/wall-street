@@ -2,6 +2,8 @@
 
 An interactive, bilingual strategy game about how institutional wealth compounds through ownership, cash flow, leverage, liquidity and control.
 
+The interface uses an original retro trading-game style inspired by early PC financial simulators: pixel typography, CRT color, broker dialogue and a deal console.
+
 Open `index.html` in a browser to play. No build step or dependencies are required.
 
 ## The simulation
